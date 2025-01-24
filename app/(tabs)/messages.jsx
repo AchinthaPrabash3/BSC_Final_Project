@@ -1,14 +1,14 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 
-const Events = () => {
+const Messages = () => {
   return (
     <View className="items-center justify-center h-screen">
-      <Text>events</Text>
+      <Text>Messages</Text>
     </View>
   );
 };
 
 const styles = StyleSheet.create({});
 
-export default Events;
+export default Messages;

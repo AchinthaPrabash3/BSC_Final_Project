@@ -8,8 +8,9 @@ const Layout = () => {
     <>
       <Tabs>
         <Tabs.Screen options={{ headerShown: false }} name="home" />
+        <Tabs.Screen options={{ headerShown: false }} name="messages" />
+        <Tabs.Screen options={{ headerShown: false }} name="cart" />
         <Tabs.Screen options={{ headerShown: false }} name="profile" />
-        <Tabs.Screen options={{ headerShown: false }} name="events" />
       </Tabs>
       <StatusBar style="dark" />
     </>
