@@ -1,47 +1,74 @@
-import { Ionicons } from "@expo/vector-icons";
+import { AntDesign, Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import React from "react";
 import { Image, StyleSheet, TouchableOpacity, View, Text } from "react-native";
+import { AirbnbRating, Rating } from "react-native-ratings";
+import { StarRatingDisplay } from "react-native-star-rating-widget";
+import index from "../app/(auth)";
 
-const ProductCard = ({ title, description, id, image }) => {
+const ProductCard = ({
+  title,
+  description,
+  $id,
+  content,
+  rating,
+  prices,
+  price_desc,
+  creator: { avatar, username, user_rating, $id: creatorId },
+}) => {
   return (
-    <View className="flex-row mt-[17px] items-start justify-center gap-3 w">
+    <View className="mt-[17px] items-start justify-center gap-3 w">
       <TouchableOpacity
-        className="h-[150px] w-[150px] bg-slate-300 rounded-lg"
+        className="w-full h-[220px] rounded-lg"
         onPress={() =>
           router.push({
             pathname: "/product_page/[id]",
             params: {
               title: title,
-              id: id,
+              id: $id,
               description: description,
-              image: image,
+              image: content,
+              price: JSON.stringify(prices),
+              priceD: JSON.stringify(price_desc),
+              rating: rating,
+              user: username,
+              avatar: avatar,
+              userRating: user_rating,
+              creatorId: creatorId,
             },
           })
         }
       >
-        <Image source={image} className="size-full" resizeMode="contain" />
+        <Image
+          source={{ uri: content }}
+          className="size-full rounded-lg"
+          resizeMode="center"
+          resizeMethod="resize"
+        />
       </TouchableOpacity>
       <View className="flex-1">
-        <View className="h-10 bg-slate-200 items-center gap-3 justify-start flex-row">
-          <Image source={""} className="size-9 rounded-full bg-amber-300" />
-          <View>
-            <Text className="text-xs font-semibold">username</Text>
-            <Text className="text-[10px] font-thin">rating</Text>
-          </View>
+        <View className="">
+          <Text className="text-3xl">{title}</Text>
+          <View className="flex-row gap-0.5">
+            {[...Array(5)].map((_, index) => (
+              <AntDesign
+                size={16}
+                key={index}
+                name="star"
+                color={index < rating ? "#FAD5A5" : "#808080"}
+              />
+            ))}
+          </View>{" "}
+          <Text>{prices[0]}.Rs</Text>
         </View>
-        <View className="mt-3 justify-between grow">
-          <View>
-            <Text>{title}</Text>
-          </View>
-          <View className="flex-row mt-2 gap-2">
-            <TouchableOpacity className="rounded-xl h-12 bg-slate-300 items-center justify-center grow">
-              <Text>buy</Text>
-            </TouchableOpacity>
-            <TouchableOpacity className="rounded-xl size-12 items-center justify-center bg-slate-500 ">
-              <Ionicons name="heart" />
-            </TouchableOpacity>
-          </View>
+        <View className="flex-row mt-2 gap-2">
+          <TouchableOpacity className="rounded-xl h-16 bg-slate-300 items-center justify-center grow flex-row">
+            <Text className="capitalize text-2xl">book</Text>
+            <AntDesign name="book" size={24} />
+          </TouchableOpacity>
+          <TouchableOpacity className="rounded-xl size-16 items-center justify-center bg-slate-500 ">
+            <Ionicons name="heart" size={24} />
+          </TouchableOpacity>
         </View>
       </View>
     </View>

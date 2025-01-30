@@ -1,12 +1,12 @@
 import { Link, Redirect, router } from "expo-router";
 import React, { useState } from "react";
-import { Alert, ScrollView, StyleSheet, Text, View } from "react-native";
+import { Alert, Image, ScrollView, StyleSheet, Text, View } from "react-native";
 import FormComponent from "../../components/FormComponent";
 import { SafeAreaView } from "react-native-safe-area-context";
 import CustomBtn from "../../components/CustomBtn";
 import { getCurrentUser, signIn } from "../../lib/appwrite";
 import { useGlobalContext } from "../../context/GlobalProvider";
-
+import heroImg from "../../assets/hero-img.png";
 const index = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { setUser, setIsLoggedIn, isLoggedIn, isLoading } = useGlobalContext();
@@ -39,13 +39,18 @@ const index = () => {
   if (!isLoading && isLoggedIn) return <Redirect href={"/home"} />;
 
   return (
-    <SafeAreaView className="bg-slate-900 h-full">
+    <SafeAreaView className="bg-main h-full">
       <ScrollView contentContainerStyle={{ height: "100%" }}>
-        <View className="items-center justify-center size-full bg-slate-900 px-5">
-          <Text className="text-5xl capitalize text-white w-full text-center">
-            sign in
-          </Text>
-          <View className="w-full gap-5">
+        <View className="items-center justify-center size-full bg-main px-5">
+          <View className="items-start w-full mb-10">
+            <Text className="text-sm font-light capitalize text-black self-start flex-none text-center">
+              sign in to
+            </Text>
+            <Text className="text-3xl font-bold capitalize text-black self-start flex-none text-center">
+              Evently
+            </Text>
+          </View>
+          <View className="w-full gap-3">
             <FormComponent
               value={loginData.email}
               handleChange={(e) =>
@@ -55,7 +60,7 @@ const index = () => {
               title={"email"}
               keyboardType={"email-address"}
               textStyles={
-                "mb-2 uppercase text-gray-100 font-light tracking-widest"
+                "mb-2 uppercase text-black font-light tracking-widest"
               }
             />
             <FormComponent
@@ -64,19 +69,26 @@ const index = () => {
               containerStyles={"w-full"}
               title={"password"}
               textStyles={
-                "mb-2 uppercase text-gray-100 font-light tracking-widest"
+                "mb-2 uppercase text-black font-light tracking-widest"
               }
             />
           </View>
           <CustomBtn
+            textStyles={"uppercase flex-none w-full text-center font-bold"}
             loading={isSubmitting}
             title={"sign in"}
-            containerStyles={"bg-red-600 w-full mt-10 rounded-lg"}
+            containerStyles={"bg-second w-full mt-5 rounded-lg "}
             handlePress={submit}
           />
-          <View>
-            <Text>dont have a account ? </Text>
-            <Link href={"sign-up"}>signup</Link>
+          <View className="flex-row mt-3">
+            <Text className="text-lg">Don't have a Account ?</Text>
+            <Link
+              href={"sign-up"}
+              className="capitalize text-lg font-bold text-[#5AB2FF]"
+            >
+              {" "}
+              sign up
+            </Link>
           </View>
         </View>
       </ScrollView>

@@ -1,7 +1,13 @@
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
 
-const CustomBtn = ({ title, containerStyles, handlePress, loading }) => {
+const CustomBtn = ({
+  title,
+  containerStyles,
+  handlePress,
+  loading,
+  textStyles,
+}) => {
   return (
     <TouchableOpacity
       onPress={handlePress}
@@ -11,7 +17,7 @@ const CustomBtn = ({ title, containerStyles, handlePress, loading }) => {
         loading ? "opacity-50" : ""
       } ${containerStyles}`}
     >
-      <Text>{title}</Text>
+      <Text className={`${textStyles}`}>{title}</Text>
     </TouchableOpacity>
   );
 };

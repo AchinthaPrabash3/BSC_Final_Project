@@ -20,9 +20,10 @@ const SignUp = () => {
     password: "",
     username: "",
   });
-  console.log(signupData);
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { setUser, setIsLoggedIn } = useGlobalContext();
+
   const submit = async () => {
     if (!signupData.email || !signupData.password || !signupData.username) {
       Alert.alert("Error", "please Enter Values");
@@ -42,20 +43,20 @@ const SignUp = () => {
   };
 
   return (
-    <SafeAreaView className="bg-slate-900 h-full">
+    <SafeAreaView className="bg-main h-full">
       <ScrollView contentContainerStyle={{ height: "100%" }}>
         <View className="items-center justify-center size-full px-4">
-          <Text>sign up</Text>
-          <View className="w-full gap-5">
+          <Text className="text-3xl font-bold capitalize text-black self-start flex-none text-center mb-10">
+            sign up
+          </Text>
+          <View className="w-full gap-3">
             <FormComponent
               handleChange={(e) =>
                 setSignupData({ ...signupData, username: e })
               }
               value={signupData.username}
               containerStyles={"w-full"}
-              textStyles={
-                "mb-2 uppercase capitalize font-light text-lg text-gray-100"
-              }
+              textStyles={"mb-2 uppercase font-light text-lg text-black"}
               title={"username"}
             />
 
@@ -65,9 +66,7 @@ const SignUp = () => {
               }
               value={signupData.email}
               containerStyles={"w-full"}
-              textStyles={
-                "mb-2 uppercase capitalize font-light text-lg text-gray-100"
-              }
+              textStyles={"mb-2 uppercase font-light text-lg text-black"}
               keyboardType={"email-address"}
               title={"email"}
             />
@@ -77,9 +76,7 @@ const SignUp = () => {
               }
               value={signupData.password}
               containerStyles={"w-full"}
-              textStyles={
-                "mb-2 uppercase capitalize font-light text-lg text-gray-100"
-              }
+              textStyles={"mb-2 uppercase font-light text-lg text-black"}
               title={"password"}
             />
           </View>
@@ -87,12 +84,18 @@ const SignUp = () => {
             handlePress={submit}
             loading={isSubmitting}
             title={"sign up"}
-            containerStyles={"bg-white w-full mt-10 rounded-xl"}
+            containerStyles={"bg-second w-full mt-5 rounded-xl "}
+            textStyles={
+              "uppercase text-center text-center w-full font-bold text-lg"
+            }
           />
-          <View>
-            <Text>have a account already</Text>
+          <View className="flex-row mt-3">
+            <Text className="text-lg">Already have a Account ? </Text>
             <TouchableOpacity onPress={() => router.back()}>
-              <Text>back</Text>
+              <Text className="text-lg font-bold text-second capitalize">
+                {" "}
+                sign in
+              </Text>
             </TouchableOpacity>
           </View>
         </View>

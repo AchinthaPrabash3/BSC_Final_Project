@@ -1,6 +1,8 @@
+import { Ionicons } from "@expo/vector-icons";
 import { router, useLocalSearchParams } from "expo-router";
 import React from "react";
 import {
+  Image,
   ScrollView,
   StyleSheet,
   Text,
@@ -10,17 +12,36 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const ProductPage = () => {
-  const { name, id } = useLocalSearchParams();
+  const {
+    title,
+    id,
+    description,
+    image,
+    price,
+    priceD,
+    user,
+    userRating,
+    avatar,
+    rating,
+  } = useLocalSearchParams();
+  console.log(JSON.parse(priceD));
+  console.log(JSON.parse(price));
   return (
-    <SafeAreaView>
-      <ScrollView>
+    <SafeAreaView className="h-screen ">
+      <ScrollView contentContainerStyle={{ height: "100%" }} className="p-2">
         <View>
-          <Text>
-            {id} - {name}
-          </Text>
-          <TouchableOpacity onPress={() => router.back()}>
-            <Text>back</Text>
-          </TouchableOpacity>
+          <View className="flex-row">
+            <TouchableOpacity onPress={() => router.back()}>
+              <Ionicons name="chevron-back-outline" size={24} color="black" />
+            </TouchableOpacity>
+            <View>
+              <Text>{title}</Text>
+              <Text>{rating}</Text>
+            </View>
+          </View>
+          <Image source={{ uri: image }} className="w-full h-[200px]" />
+          <Text>{description}</Text>
+          <View></View>
         </View>
       </ScrollView>
     </SafeAreaView>
