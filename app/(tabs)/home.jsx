@@ -19,9 +19,10 @@ const Home = () => {
   const { data } = useAppwrite(getAllGigs());
 
   return (
-    <SafeAreaView className="h-screen p-4 bg-white">
+    <SafeAreaView className="h-screen  p-2 bg-main">
       <FlatList
-        className="h-full"
+        showsVerticalScrollIndicator={false}
+        className="h-full flex-1"
         data={data}
         keyExtractor={(item) => item.$id}
         renderItem={({ item }) => <ProductCard {...item} key={item.id} />}

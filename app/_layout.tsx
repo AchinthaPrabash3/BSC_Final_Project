@@ -15,6 +15,7 @@ export default function RootLayout() {
             name="product_page/[id]"
             options={{ headerShown: false }}
           />
+          <Stack.Screen name="create" options={{ headerShown: false }} />
         </Stack>
       </GlobalProvider>
       <StatusBar style="light" />

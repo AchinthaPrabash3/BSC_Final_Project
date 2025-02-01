@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useGlobalContext } from "../../context/GlobalProvider";
-import { router } from "expo-router";
+import { Link, router } from "expo-router";
 import { signOut } from "../../lib/appwrite";
 const Profile = () => {
   const { setIsLoggedIn, setUser } = useGlobalContext();
@@ -18,6 +18,7 @@ const Profile = () => {
       >
         <Text>sign out</Text>
       </TouchableOpacity>
+      <Link href="create">create</Link>
     </View>
   );
 };
