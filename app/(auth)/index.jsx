@@ -6,7 +6,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import CustomBtn from "../../components/CustomBtn";
 import { getCurrentUser, signIn } from "../../lib/appwrite";
 import { useGlobalContext } from "../../context/GlobalProvider";
-import heroImg from "../../assets/hero-img.png";
+
 const index = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { setUser, setIsLoggedIn, isLoggedIn, isLoading } = useGlobalContext();
@@ -41,7 +41,7 @@ const index = () => {
   return (
     <SafeAreaView className="bg-main h-full">
       <ScrollView contentContainerStyle={{ height: "100%" }}>
-        <View className="items-center justify-center size-full bg-main px-5">
+        <View className="items-center justify-center size-full bg-main px-5 relative">
           <View className="items-start w-full mb-10">
             <Text className="text-sm font-light capitalize text-black self-start flex-none text-center">
               sign in to

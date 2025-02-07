@@ -2,7 +2,7 @@ import { AntDesign } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { Platform, StyleSheet, Text, View } from "react-native";
 
 export const TabIcons = ({ color, focused, icon, name }) => {
   return (
@@ -24,7 +24,7 @@ const Layout = () => {
     { name: "home", icon: "home", path: "home" },
     { name: "events", icon: "calendar", path: "events" },
     { name: "messages", icon: "message1", path: "messages" },
-    { name: "cart", icon: "shoppingcart", path: "cart" },
+    // { name: "cart", icon: "shoppingcart", path: "cart" },
     { name: "profile", icon: "user", path: "profile" },
   ];
 
@@ -33,14 +33,14 @@ const Layout = () => {
       <Tabs
         screenOptions={{
           tabBarShowLabel: false,
-          tabBarActiveTintColor: "#A0DEFF",
+          tabBarActiveTintColor: "#a3e635",
           tabBarInactiveTintColor: "#758694",
           tabBarStyle: {
             backgroundColor: "#ffffff",
             borderTopWidth: 1,
-            height: 84,
-            paddingTop: 15,
-            borderColor: "#A0DEFF",
+            height: Platform.OS == "ios" ? 84 : 80,
+            paddingTop: Platform.OS == "ios" ? 25 : 20,
+            borderColor: "#a3e635",
           },
         }}
       >

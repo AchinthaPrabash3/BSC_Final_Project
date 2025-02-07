@@ -18,7 +18,7 @@ export default function RootLayout() {
           <Stack.Screen name="create" options={{ headerShown: false }} />
         </Stack>
       </GlobalProvider>
-      <StatusBar style="light" />
+      <StatusBar style="dark" />
     </>
   );
 }

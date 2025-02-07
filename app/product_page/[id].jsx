@@ -1,12 +1,21 @@
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 import { router, useLocalSearchParams } from "expo-router";
 import React, { useState } from "react";
-import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import {
+  Alert,
+  Image,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import CalendarComp from "../../components/CalenderComp";
 import { toDateId } from "@marceloterreiro/flash-calendar";
 import CustomBtn from "../../components/CustomBtn";
 import { useGlobalContext } from "../../context/GlobalProvider";
+import { buyGig } from "../../lib/appwrite";
+
 const ProductPage = () => {
   const {
     title,
@@ -24,12 +33,31 @@ const ProductPage = () => {
   const today = toDateId(new Date());
   const [selectDate, setSelectDate] = useState(today);
 
+  const { user } = useGlobalContext();
+  const [select, setSelct] = useState(null);
   const [order, setOrder] = useState({
-    date: [],
-    price: "",
-    userId: "",
+    date: "",
+    price: 0,
+    buyerId: user.$id,
     gigId: id,
   });
+  const [placing, setPlacing] = useState(false);
+
+  const placeOrder = async () => {
+    if (!order.date || !order.price) {
+      Alert.alert("please select a order");
+      return;
+    }
+    setPlacing(true);
+    try {
+      await buyGig({ ...order });
+      router.replace(`home`);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setPlacing(false);
+    }
+  };
 
   return (
     <SafeAreaView className="h-screen">
@@ -87,7 +115,7 @@ const ProductPage = () => {
             </View>
           </View>
 
-          <Text className=" text-lg" style={{ textAlign: "justify" }}>
+          <Text className="text-sm" style={{ textAlign: "justify" }}>
             Lorem ipsum dolor, sit amet consectetur adipisicing elit. Eaque,
             nobis voluptates nulla dolores excepturi laudantium fugit possimus
             voluptatum animi sit quibusdam eos obcaecati rem quos quasi atque.
@@ -96,10 +124,29 @@ const ProductPage = () => {
 
           <ScrollView horizontal className="my-4">
             {JSON.parse(price).map((item, i) => (
-              <View key={i} className="size-[150px] bg-white ml-2 p-5">
-                <Text>{JSON.parse(priceD)[i]}</Text>
-                <Text>{item}</Text>
-                <TouchableOpacity>
+              <View
+                key={i}
+                className={`size-[200px] ${
+                  select == i ? "bg-lime-400" : "bg-white"
+                }  ml-2 p-3 rounded-md justify-between items-center`}
+              >
+                <View className="p-2">
+                  <Text className="text-justify font-light">
+                    {JSON.parse(priceD)[i]}
+                  </Text>
+                  <Text className="text-center mt-4 text-xl font-semibold ">
+                    {item}.Rs
+                  </Text>
+                </View>
+                <TouchableOpacity
+                  onPress={() => {
+                    setSelct(i);
+                    setOrder({ ...order, price: Number(item) });
+                  }}
+                  className={`${
+                    select == i ? "bg-white" : "bg-lime-400"
+                  } py-4  w-full items-center justify-center rounded-md`}
+                >
                   <Text>select</Text>
                 </TouchableOpacity>
               </View>
@@ -107,14 +154,35 @@ const ProductPage = () => {
           </ScrollView>
 
           <CalendarComp
+            getDate={setOrder}
+            order={order}
+            gigId={id}
             selectDate={selectDate}
             setSelectDate={setSelectDate}
             today={today}
           />
+          {select !== null ? (
+            <View
+              className=" bg-white rounded-xl mb-4 p-3 flex-row justify-between"
+              style={{
+                shadowColor: "#171717",
+                shadowOffset: { width: -2, height: 4 },
+                shadowOpacity: 0.2,
+                shadowRadius: 3,
+              }}
+            >
+              <Text>Total : {order.price}.Rs</Text>
+              <Text>On : {order.date || "select date"}</Text>
+            </View>
+          ) : (
+            ""
+          )}
           <CustomBtn
+            loading={placing}
+            handlePress={placeOrder}
             title={"book now"}
             textStyles={"capitalize font-bold text-2xl"}
-            containerStyles={"h-16 w-full bg-second"}
+            containerStyles={"h-16 w-full bg-lime-400 rounded-lg"}
           />
         </View>
       </ScrollView>
