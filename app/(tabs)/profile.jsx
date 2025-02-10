@@ -10,7 +10,12 @@ import {
 } from "react-native";
 import { useGlobalContext } from "../../context/GlobalProvider";
 import { Link, router } from "expo-router";
-import { getUserEvents, getUserPosts, signOut } from "../../lib/appwrite";
+import {
+  getUserBookedGigs,
+  getUserEvents,
+  getUserPosts,
+  signOut,
+} from "../../lib/appwrite";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 import useAppwrite from "../../hooks/useAppwrite";
@@ -21,6 +26,7 @@ const Profile = () => {
 
   const { data: gigData } = useAppwrite(getUserPosts(user.$id));
   const { data: eventData } = useAppwrite(getUserEvents(user.$id));
+  const { data: baughtGigs } = useAppwrite(getUserBookedGigs(user.$id));
 
   const tabData = ["Gigs", "Events", "bought"];
   const [tab, setTab] = useState(0);
@@ -75,7 +81,7 @@ const Profile = () => {
               <View>
                 <TouchableOpacity
                   className="h-[100px] w-full flex-row items-center justify-center gap-3 border-2 border-dashed border-second rounded-xl bg-white"
-                  onPress={() => router.push("create")}
+                  onPress={() => router.push("createGig")}
                 >
                   <Text className="capitalize font-bold">create a gig</Text>
                   <Ionicons name="create-outline" size={24} />
@@ -88,7 +94,7 @@ const Profile = () => {
               <View>
                 <TouchableOpacity
                   className="h-[100px] w-full flex-row items-center justify-center gap-3 border-2 border-dashed border-second rounded-xl bg-white mb-5"
-                  onPress={() => router.push("create")}
+                  onPress={() => router.push("createEvent")}
                 >
                   <Text className="capitalize font-bold">create a event</Text>
                   <Ionicons name="create-outline" size={24} />
@@ -100,7 +106,11 @@ const Profile = () => {
                 </View>
               </View>
             ) : tab == 2 ? (
-              ""
+              <View>
+                {baughtGigs.map((item, i) => {
+                  return <Text key={i}>{item.gigId.title}</Text>;
+                })}
+              </View>
             ) : (
               ""
             )}

@@ -17,11 +17,9 @@ const CalendarComp = ({
 
   useEffect(() => {
     if (data) {
-      setDates(data.map((item) => item.date));
+      setDates(data.map((item) => toDateId(new Date(item.date))));
     }
   }, [data]);
-
-  console.log(dates);
 
   const handleDateSelect = (e) => {
     if (dates.includes(e)) {
@@ -36,6 +34,7 @@ const CalendarComp = ({
     <View style={styles.container}>
       <View style={styles.calendarContainer}>
         <Calendar
+          calendarMinDateId={today}
           calendarDisabledDateIds={dates}
           calendarMonthId={today}
           onCalendarDayPress={handleDateSelect}

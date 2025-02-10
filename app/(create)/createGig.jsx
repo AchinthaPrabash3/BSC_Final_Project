@@ -1,3 +1,4 @@
+import { AntDesign, Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import React from "react";
 import {
@@ -8,15 +9,19 @@ import {
   Text,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import FormComponent from "../../components/FormComponent";
 
-const Create = () => {
+const CreateGig = () => {
   return (
-    <SafeAreaView className="h-screen bg-main">
-      <ScrollView>
+    <SafeAreaView className="h-screen bg-white">
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <View>
           <TouchableOpacity onPress={() => router.back()}>
-            <Text>back</Text>
+            <Ionicons name="chevron-back" size={32} />
           </TouchableOpacity>
+        </View>
+        <View>
+          <FormComponent />
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -25,4 +30,4 @@ const Create = () => {
 
 const styles = StyleSheet.create({});
 
-export default Create;
+export default CreateGig;

@@ -43,7 +43,7 @@ const SignUp = () => {
   };
 
   return (
-    <SafeAreaView className="bg-main h-full">
+    <SafeAreaView className="h-full bg-slate-200">
       <ScrollView contentContainerStyle={{ height: "100%" }}>
         <View className="items-center justify-center size-full px-4">
           <Text className="text-3xl font-bold capitalize text-black self-start flex-none text-center mb-10">
@@ -84,7 +84,7 @@ const SignUp = () => {
             handlePress={submit}
             loading={isSubmitting}
             title={"sign up"}
-            containerStyles={"bg-second w-full mt-5 rounded-xl "}
+            containerStyles={"bg-lime-400 w-full mt-5 rounded-xl "}
             textStyles={
               "uppercase text-center text-center w-full font-bold text-lg"
             }

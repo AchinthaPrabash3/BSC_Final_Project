@@ -25,12 +25,18 @@ const index = () => {
     try {
       await signIn({ email: loginData.email, password: loginData.password });
       const result = await getCurrentUser();
+
+      if (!result) {
+        Alert.alert("incorect Email or Password");
+        return;
+      }
+
       setIsLoggedIn(true);
       setUser(result);
       router.replace("/home");
     } catch (error) {
       Alert.alert("Error signing in", error.message);
-      console.error(error);
+      console.error("sign in : ", error);
     } finally {
       setIsSubmitting(false);
     }
@@ -39,9 +45,9 @@ const index = () => {
   if (!isLoading && isLoggedIn) return <Redirect href={"/home"} />;
 
   return (
-    <SafeAreaView className="bg-main h-full">
+    <SafeAreaView className=" h-full">
       <ScrollView contentContainerStyle={{ height: "100%" }}>
-        <View className="items-center justify-center size-full bg-main px-5 relative">
+        <View className="items-center justify-center size-full  px-5 relative">
           <View className="items-start w-full mb-10">
             <Text className="text-sm font-light capitalize text-black self-start flex-none text-center">
               sign in to

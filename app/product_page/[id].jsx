@@ -40,22 +40,27 @@ const ProductPage = () => {
     price: 0,
     buyerId: user.$id,
     gigId: id,
+    canceled: false,
+    completed: false,
+    securityCode: Math.floor(1000 + Math.random() * 9000),
   });
   const [placing, setPlacing] = useState(false);
 
-  const placeOrder = async () => {
-    if (!order.date || !order.price) {
-      Alert.alert("please select a order");
+  const placeOreder = async () => {
+    if (!order.date) {
+      Alert.alert("please select a date");
+      return;
+    }
+    if (!order.price) {
+      Alert.alert("please select a package");
       return;
     }
     setPlacing(true);
     try {
       await buyGig({ ...order });
-      router.replace(`home`);
+      router.replace("/home");
     } catch (error) {
-      console.error(error);
-    } finally {
-      setPlacing(false);
+      console.error("Error placing order 1:", error);
     }
   };
 
@@ -179,7 +184,13 @@ const ProductPage = () => {
           )}
           <CustomBtn
             loading={placing}
-            handlePress={placeOrder}
+            handlePress={() => {
+              setOrder({
+                ...order,
+                securityCode: Math.floor(1000 + Math.random() * 9000),
+              });
+              placeOreder();
+            }}
             title={"book now"}
             textStyles={"capitalize font-bold text-2xl"}
             containerStyles={"h-16 w-full bg-lime-400 rounded-lg"}
