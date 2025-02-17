@@ -16,6 +16,10 @@ export default function RootLayout() {
             options={{ headerShown: false }}
           />
           <Stack.Screen name="(create)" options={{ headerShown: false }} />
+          <Stack.Screen
+            name="events_page/[id]"
+            options={{ headerShown: false }}
+          />
         </Stack>
       </GlobalProvider>
       <StatusBar style="dark" />

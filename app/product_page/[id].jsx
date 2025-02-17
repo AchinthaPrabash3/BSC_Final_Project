@@ -66,6 +66,22 @@ const ProductPage = () => {
 
   return (
     <SafeAreaView className="h-screen">
+      {select !== null ? (
+        <View
+          className=" bg-white rounded-xl mb-4 p-3 flex-row justify-between"
+          style={{
+            shadowColor: "#171717",
+            shadowOffset: { width: -2, height: 4 },
+            shadowOpacity: 0.2,
+            shadowRadius: 3,
+          }}
+        >
+          <Text>Total : {order.price}.Rs</Text>
+          <Text>On : {order.date || "select date"}</Text>
+        </View>
+      ) : (
+        ""
+      )}
       <ScrollView
         contentContainerStyle={{
           flexGrow: 1,
@@ -166,22 +182,7 @@ const ProductPage = () => {
             setSelectDate={setSelectDate}
             today={today}
           />
-          {select !== null ? (
-            <View
-              className=" bg-white rounded-xl mb-4 p-3 flex-row justify-between"
-              style={{
-                shadowColor: "#171717",
-                shadowOffset: { width: -2, height: 4 },
-                shadowOpacity: 0.2,
-                shadowRadius: 3,
-              }}
-            >
-              <Text>Total : {order.price}.Rs</Text>
-              <Text>On : {order.date || "select date"}</Text>
-            </View>
-          ) : (
-            ""
-          )}
+
           <CustomBtn
             loading={placing}
             handlePress={() => {

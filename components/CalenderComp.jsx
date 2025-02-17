@@ -1,6 +1,6 @@
 import { Calendar, toDateId } from "@marceloterreiro/flash-calendar";
 import React, { useEffect, useState } from "react";
-import { Alert, StyleSheet, View } from "react-native";
+import { Alert, Platform, StyleSheet, View } from "react-native";
 import useAppwrite from "../hooks/useAppwrite";
 import { getBookedDates } from "../lib/appwrite";
 
@@ -31,7 +31,7 @@ const CalendarComp = ({
   };
 
   return (
-    <View style={styles.container}>
+    <View className="mb-4">
       <View style={styles.calendarContainer}>
         <Calendar
           calendarMinDateId={today}
@@ -47,15 +47,15 @@ const CalendarComp = ({
           calendarDayStyle={{
             default: {
               textStyle: {
-                color: "#000000",
+                color: Platform.OS == "ios" ? "#000000" : "#ffffff",
               },
             },
             active: {
               containerStyle: {
-                backgroundColor: "#000000",
+                backgroundColor: Platform.OS == "ios" ? "#000000" : "red",
               },
               textStyle: {
-                color: "#FFFFFF",
+                color: Platform.OS == "ios" ? "#FFFFFF" : "#000000",
               },
             },
           }}
@@ -68,19 +68,8 @@ const CalendarComp = ({
 
 // Styles
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#F5F5F5",
-    borderRadius: 10,
-    marginVertical: 10,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 5,
-    elevation: 3,
-  },
   calendarContainer: {
-    backgroundColor: "#FFF",
+    backgroundColor: Platform.OS == "ios" ? "#fff" : "gray",
     borderRadius: 10,
     padding: 10,
     shadowColor: "#000",

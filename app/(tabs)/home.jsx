@@ -7,6 +7,7 @@ import {
   View,
   TouchableOpacity,
   Platform,
+  RefreshControl,
 } from "react-native";
 import { getAllGigs } from "../../lib/appwrite";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -17,8 +18,16 @@ import useAppwrite from "../../hooks/useAppwrite";
 
 const Home = () => {
   const { user } = useGlobalContext();
-  const { data } = useAppwrite(getAllGigs());
+  const { data, reFeatch } = useAppwrite(getAllGigs());
   const [selected, setSelected] = useState(0);
+
+  const [isRefressing, setIsRefressing] = useState(false);
+  const onRefresh = async () => {
+    setIsRefressing(true);
+    await reFeatch();
+    setIsRefressing(false);
+  };
+
   return (
     <SafeAreaView
       className={`h-screen ${Platform.OS == "ios" ? "p-2" : "p-4"} `}
@@ -58,6 +67,9 @@ const Home = () => {
             </ScrollView>
           </View>
         )}
+        refreshControl={
+          <RefreshControl refreshing={isRefressing} onRefresh={onRefresh} />
+        }
       />
     </SafeAreaView>
   );

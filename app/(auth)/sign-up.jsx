@@ -43,7 +43,7 @@ const SignUp = () => {
   };
 
   return (
-    <SafeAreaView className="h-full bg-slate-200">
+    <SafeAreaView className="h-full bg-stone-300">
       <ScrollView contentContainerStyle={{ height: "100%" }}>
         <View className="items-center justify-center size-full px-4">
           <Text className="text-3xl font-bold capitalize text-black self-start flex-none text-center mb-10">
@@ -92,7 +92,7 @@ const SignUp = () => {
           <View className="flex-row mt-3">
             <Text className="text-lg">Already have a Account ? </Text>
             <TouchableOpacity onPress={() => router.back()}>
-              <Text className="text-lg font-bold text-second capitalize">
+              <Text className="text-lg font-bold text-lime-800 capitalize">
                 {" "}
                 sign in
               </Text>
