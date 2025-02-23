@@ -20,6 +20,7 @@ export default function RootLayout() {
             name="events_page/[id]"
             options={{ headerShown: false }}
           />
+          <Stack.Screen name="(manage)" options={{ headerShown: false }} />
         </Stack>
       </GlobalProvider>
       <StatusBar style="dark" />

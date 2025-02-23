@@ -174,14 +174,16 @@ const ProductPage = () => {
             ))}
           </ScrollView>
 
-          <CalendarComp
-            getDate={setOrder}
-            order={order}
-            gigId={id}
-            selectDate={selectDate}
-            setSelectDate={setSelectDate}
-            today={today}
-          />
+         
+            <CalendarComp
+              getDate={setOrder}
+              order={order}
+              gigId={id}
+              selectDate={selectDate}
+              setSelectDate={setSelectDate}
+              today={today}
+            />
+          
 
           <CustomBtn
             loading={placing}

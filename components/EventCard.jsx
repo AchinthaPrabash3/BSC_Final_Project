@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import CustomBtn from "../components/CustomBtn";
 import { router } from "expo-router";
 const EventCard = ({
@@ -8,8 +8,9 @@ const EventCard = ({
   date,
   prices,
   location,
-  ticketCount,
+  ticket_count,
   banner,
+  event_desc,
 }) => {
   const [showDate, setShowDate] = useState("");
   const dates = new Date(date);
@@ -27,7 +28,24 @@ const EventCard = ({
     );
   }, []);
   return (
-    <View className="bg-white p-3 rounded-xl">
+    <TouchableOpacity
+      onPress={() =>
+        router.push({
+          pathname: "events_page/[id]",
+          params: {
+            $id,
+            eventname,
+            date,
+            prices,
+            location,
+            ticket_count,
+            banner,
+            event_desc,
+          },
+        })
+      }
+      className="bg-white p-3 rounded-xl"
+    >
       <Image
         source={{ uri: banner }}
         className="w-full h-[500px] rounded-lg"
@@ -53,24 +71,7 @@ const EventCard = ({
           </View>
         </View>
       </View>
-      <View className="flex-row items-center mt-4">
-        <Text className="text-xl font-semibold leading-none mt-4 text-center w-1/2">
-          {ticketCount > 0 ? ticketCount : "sold out"}
-        </Text>
-        <CustomBtn
-          handlePress={() =>
-            router.push({
-              pathname: "events_page/[id]",
-              params: {
-                id: $id,
-              },
-            })
-          }
-          title={"buy"}
-          containerStyles={"bg-second rounded-xl flex-1 w-1/2"}
-        />
-      </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

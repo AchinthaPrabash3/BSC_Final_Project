@@ -359,7 +359,7 @@ const CreateGig = () => {
         <CustomBtn
           loading={isSubmitting}
           handlePress={submitGig}
-          title={"preview"}
+          title={"Create Gig"}
           containerStyles={"bg-lime-400 mt-4 "}
           textStyles={"uppercase w-full text-center"}
         />

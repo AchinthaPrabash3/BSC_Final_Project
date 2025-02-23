@@ -123,7 +123,7 @@ const CreateEvent = () => {
   };
 
   const [isPickerVisable, setIsPickerVisable] = useState(false);
-
+  const today = new Date();
   const showDatePicker = () => {
     setIsPickerVisable(true);
   };
@@ -135,13 +135,25 @@ const CreateEvent = () => {
   const handleConfirm = (date) => {
     setEventData((prev) => ({
       ...prev,
-      date: new Date(date).toLocaleString(),
+      date: date,
     }));
     hideDatePicker();
   };
 
   const [submitting, setSubmitting] = useState(false);
   const submit = async () => {
+    if (
+      !eventData.date ||
+      !eventData.date ||
+      !eventData.event_desc ||
+      !eventData.location ||
+      !eventData.organizer ||
+      !eventData.title
+    ) {
+      Alert.alert("empty data");
+      return;
+    }
+
     setSubmitting(true);
     try {
       await createEvent({ ...eventData });
@@ -182,7 +194,10 @@ const CreateEvent = () => {
                   />
                 </View>
               ) : (
-                <View className="h-16 border border-lime-400 bg-white rounded-lg"></View>
+                <View className="h-16 border border-black bg-lime-400 rounded-lg flex-row items-center justify-center gap-2">
+                  <Text className="font-bold">Select a Image</Text>
+                  <Ionicons name="image-outline" size={24} />
+                </View>
               )}
             </TouchableOpacity>
           </View>
@@ -207,7 +222,7 @@ const CreateEvent = () => {
               onPress={showDatePicker}
               className="h-16 rounded-xl bg-white justify-between items-center flex-row px-3"
             >
-              <Text>{eventData.date}</Text>
+              <Text>{new Date(eventData.date).toLocaleString()}</Text>
               <Ionicons name="calendar-number-outline" size={24} />
             </TouchableOpacity>
             <DateTimePicker
@@ -230,9 +245,9 @@ const CreateEvent = () => {
           />
           <View className="mt-4">
             <Text className="mb-2">Add Tickets</Text>
-            <View className="h-[300px] border border-dashed">
-              <ScrollView contentContainerStyle={{ height: 300 }}>
-                {eventData.prices ? (
+            <View className="h-[300px] border border-dashed rounded-md">
+              <ScrollView contentContainerStyle={{ height: 300, padding: 5 }}>
+                {eventData.prices.length ? (
                   eventData.prices.map((price, index) => (
                     <TouchableOpacity
                       key={index}
@@ -245,7 +260,9 @@ const CreateEvent = () => {
                     </TouchableOpacity>
                   ))
                 ) : (
-                  <View></View>
+                  <View className="w-full flex-1 h-[300px] items-center justify-center bg-lime-400 rounded-lg">
+                    <Text>max three tears</Text>
+                  </View>
                 )}
               </ScrollView>
             </View>
@@ -282,7 +299,8 @@ const CreateEvent = () => {
               <CustomBtn
                 handlePress={handleSavingPrice}
                 title={pricings.editingIndex !== null ? "Edit" : "Add"}
-                containerStyles={"bg-lime-400 mt-5"}
+                containerStyles={"bg-lime-400 mt-5 w-full self-end rounded-xl"}
+                textStyles={"font-bold uppercase w-full text-center"}
               />
             </View>
           </View>
@@ -290,7 +308,8 @@ const CreateEvent = () => {
             loading={submitting}
             handlePress={submit}
             title={"create event"}
-            containerStyles={"bg-lime-400 mt-5"}
+            containerStyles={"bg-lime-400 mt-5 rounded-xl"}
+            textStyles={"font-bold capitalize"}
           />
         </View>
       </ScrollView>
