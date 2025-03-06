@@ -23,6 +23,7 @@ const ManageGig = () => {
     useLocalSearchParams();
   const { data } = useAppwrite(getOrders(id));
   const [isDeleteing, setIsDeleting] = useState(false);
+
   const deletingGig = async () => {
     if (activeOrders > 0) {
       Alert.alert("complete all the orders or cancel the orders");
@@ -43,6 +44,7 @@ const ManageGig = () => {
   const handleCnacelOrder = async (orderId) => {
     try {
       await cancelGigOrders(orderId);
+      router.back();
     } catch (error) {
       console.error(error);
     }
@@ -83,14 +85,36 @@ const ManageGig = () => {
           <AntDesign name="edit" size={24} />
         </View>
         {data.map((items, i) => (
-          <View key={i}>
-            <Text>{items.canceled ? "canceled" : "live"}</Text>
-            <Text>{items.$id}</Text>
+          <View
+            key={i}
+            className="flex-row items-center justify-between h-[100px]"
+          >
+            <View>
+              <Text>{items.canceled ? "canceled" : "live"}</Text>
+              <Text>{items.price}</Text>
+            </View>
             <TouchableOpacity
               className={`w-[100px] items-center justify-center h-16 ${
                 items.canceled ? "bg-slate-200" : "bg-lime-400"
               }`}
-              onPress={() => handleCnacelOrder(items.$id)}
+              onPress={() =>
+                Alert.alert(
+                  "Order Cancellation", // Title of the alert
+                  "This order will be canceled.", // Message to display
+                  [
+                    {
+                      text: "Cancel", // Text for the Cancel button
+                      onPress: () => console.log("Cancel Pressed"), // Action when Cancel is pressed
+                      style: "cancel", // Optional: Adds a visual style to indicate it's a cancel action
+                    },
+                    {
+                      text: "OK", // Text for the OK button
+                      onPress: () => handleCnacelOrder(items.$id), // Action when OK is pressed
+                    },
+                  ],
+                  { cancelable: false } // Optional: Prevents dismissing the alert by tapping outside
+                )
+              }
               disabled={items.canceled}
             >
               <Text>cancel order</Text>

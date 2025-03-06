@@ -13,6 +13,7 @@ import { useGlobalContext } from "../../context/GlobalProvider";
 import { Link, router } from "expo-router";
 import {
   getUserBookedGigs,
+  getUserBoughtTickets,
   getUserEvents,
   getUserPosts,
   signOut,
@@ -36,6 +37,10 @@ const Profile = () => {
   const { data: baughtGigs, reFeatch: refetchBoughtGigs } = useAppwrite(
     getUserBookedGigs(user.$id)
   );
+  const { data: tickets, reFeatch: reFeatchTickets } = useAppwrite(
+    getUserBoughtTickets(user.$id)
+  );
+
   const tabData = ["Gigs", "Events", "bought"];
   const [tab, setTab] = useState(0);
   const [refreshing, setRefreshing] = useState(false);
@@ -46,6 +51,7 @@ const Profile = () => {
       await refetchGigs();
       await refetchEvents();
       await refetchBoughtGigs();
+      await reFeatchTickets();
     } catch (error) {
       console.error("Error refreshing data:", error);
     } finally {
@@ -93,7 +99,7 @@ const Profile = () => {
             className="size-[100px] mx-auto mt-5 rounded-full bg-white"
             resizeMode="contain"
           />
-          {/* <View> add user stats </View> */}
+          <View></View>
           <View className="border-b border-slate-500 flex-row w-full mt-5 gap-3 px-3 pb-3">
             {tabData.map((item, i) => (
               <TouchableOpacity
@@ -144,7 +150,15 @@ const Profile = () => {
             ) : tab == 2 ? (
               <View>
                 {baughtGigs?.map((item, i) => {
-                  return <Text key={i}>{item.gigId.title}</Text>;
+                  if (item?.gigId?.title !== null) {
+                    return <Text key={i}>{item?.gigId?.title}</Text>;
+                  }
+                })}
+
+                {tickets?.map((ticket, i) => {
+                  if (ticket?.eventId?.eventname !== null) {
+                    return <Text key={i}>{ticket?.eventId?.eventname}</Text>;
+                  }
                 })}
               </View>
             ) : (

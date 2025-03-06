@@ -11,6 +11,7 @@ const ProductCard = ({
   rating,
   prices,
   price_desc,
+    price_titles,
   creator: { avatar, username, user_rating, $id: creatorId },
 }) => {
   const [color, setColor] = useState(false);
@@ -30,6 +31,7 @@ const ProductCard = ({
         avatar: avatar,
         userRating: user_rating,
         creatorId: creatorId,
+        price_titles:JSON.stringify(price_titles),
       },
     });
 

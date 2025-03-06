@@ -2,6 +2,8 @@ import { AntDesign, Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import React from "react";
 import { StyleSheet, View, Text, Image, TouchableOpacity } from "react-native";
+import useAppwrite from "../hooks/useAppwrite";
+import {getTicketSails} from "../lib/appwrite";
 
 const EventCardProfile = ({
   $id,
@@ -13,6 +15,10 @@ const EventCardProfile = ({
   banner,
   event_desc,
 }) => {
+
+    const {data} = useAppwrite(getTicketSails($id));
+    console.log(data)
+
   return (
     <View className="flex-row bg-lime-200 gap-3 h-[180px] items-center p-3">
       <Image
@@ -26,7 +32,7 @@ const EventCardProfile = ({
           <Text numberOfLines={3}>{event_desc}</Text>
         </View>
         <View className="flex-row justify-between items-center">
-          <Text>sold tickets</Text>
+          <Text>sold tickets - {data.length} </Text>
           <TouchableOpacity
             onPress={() =>
               router.push({

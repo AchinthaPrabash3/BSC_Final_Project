@@ -19,12 +19,18 @@ const ProductCardProfile = ({
   const [orders, setOrders] = useState(0);
 
   useEffect(() => {
-    data.map((item) => {
+    // Reset the orders before each calculation
+    setOrders(0);
+
+    const totalOrders = data.reduce((acc, item) => {
       if (item.canceled == false) {
-        setOrders((prev) => prev + 1);
+        return acc + 1;
       }
-    });
-  }, []);
+      return acc;
+    }, 0);
+
+    setOrders(totalOrders);
+  }, [data]);
 
   return (
     <TouchableOpacity
@@ -46,7 +52,10 @@ const ProductCardProfile = ({
           </Text>
         </View>
         <View className="mt-3 flex-row w-full justify-between items-center">
-          <Text className="font-bold  capitalize">orders : {orders}</Text>
+          <Text className="font-bold  capitalize">
+            {" "}
+            Active orders : {orders}
+          </Text>
           <TouchableOpacity
             className="flex-row gap-2 items-center"
             onPress={() =>

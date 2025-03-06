@@ -11,14 +11,17 @@ const EventCard = ({
   ticket_count,
   banner,
   event_desc,
+  price_titles,
 }) => {
   const [showDate, setShowDate] = useState("");
+  const [showTime, setShowTime] = useState("");
   const dates = new Date(date);
   useEffect(() => {
     const year = dates.getFullYear();
     const month = dates.getMonth();
     const day = dates.getDate();
     const hour = dates.getUTCHours();
+    const amPm = hour >= 12 ? "PM" : "AM";
     const formatedHour = (hour % 12 || 12).toString().padStart(2, "0");
     const minutes = dates.getUTCMinutes().toString().padStart(2, "0");
     setShowDate(
@@ -26,9 +29,13 @@ const EventCard = ({
         .toString()
         .padStart(2, "0")}`
     );
+
+    setShowTime(`${formatedHour}:${minutes} ${amPm}`);
   }, []);
+
   return (
     <TouchableOpacity
+      // disabled={new Date() > new Date(date)}
       onPress={() =>
         router.push({
           pathname: "events_page/[id]",
@@ -36,11 +43,12 @@ const EventCard = ({
             $id,
             eventname,
             date,
-            prices,
+            prices: JSON.stringify(prices),
             location,
-            ticket_count,
+            ticket_count: JSON.stringify(ticket_count),
             banner,
             event_desc,
+            price_titles: JSON.stringify(price_titles),
           },
         })
       }
@@ -54,10 +62,9 @@ const EventCard = ({
       <View className="flex-row items-center justify-between mt-4">
         <View>
           <View className="flex-row justify-between w-full">
-            <Text className="text-3xl capitalize font-bold w-[200px] leading-none">
+            <Text className="text-3xl capitalize font-bold leading-none">
               {eventname}
             </Text>
-            <Text className="text-2xl font-bold">{prices[0]}.Rs</Text>
           </View>
           <View className="flex-row w-full justify-between">
             <View className="flex-row gap-2 w-full">
@@ -65,7 +72,10 @@ const EventCard = ({
                 at <Text className="font-bold text-lg">{location}</Text>
               </Text>
               <Text className="capitalize ">
-                - <Text className="font-bold text-lg ">{showDate}</Text>
+                -{" "}
+                <Text className="font-bold text-lg ">
+                  {showDate} from {showTime}
+                </Text>
               </Text>
             </View>
           </View>

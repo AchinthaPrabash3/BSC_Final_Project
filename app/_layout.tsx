@@ -21,6 +21,7 @@ export default function RootLayout() {
             options={{ headerShown: false }}
           />
           <Stack.Screen name="(manage)" options={{ headerShown: false }} />
+          <Stack.Screen name={'search/[query]'} options={{ headerShown: false }} />
         </Stack>
       </GlobalProvider>
       <StatusBar style="dark" />

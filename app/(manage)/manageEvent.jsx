@@ -46,8 +46,8 @@ const ManageEvent = () => {
                 {new Date() == new Date(date)
                   ? `today - `
                   : new Date() < new Date(date)
-                  ? "ended - "
-                  : "upcoming - "}
+                  ? "upcoming - "
+                  : "ended - "}
                 {new Date(date).toLocaleString()}
               </Text>
             </View>
