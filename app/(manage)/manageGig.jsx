@@ -41,15 +41,6 @@ const ManageGig = () => {
     }
   };
 
-  const handleCnacelOrder = async (orderId) => {
-    try {
-      await cancelGigOrders(orderId);
-      router.back();
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   return (
     <SafeAreaView className="h-screen">
       <ScrollView contentContainerStyle={{ flexGrow: 1, padding: 10 }}>
@@ -78,49 +69,66 @@ const ManageGig = () => {
         </View>
         <Image
           source={{ uri: image }}
-          className="w-full h-[200px]"
+          className="w-full h-[200px] rounded-xl"
           resizeMode="cover"
         />
         <View className="w-full items-center justify-end p-2 flex-row gap-2">
           <AntDesign name="edit" size={24} />
         </View>
-        {data.map((items, i) => (
-          <View
-            key={i}
-            className="flex-row items-center justify-between h-[100px]"
-          >
-            <View>
-              <Text>{items.canceled ? "canceled" : "live"}</Text>
-              <Text>{items.price}</Text>
-            </View>
-            <TouchableOpacity
-              className={`w-[100px] items-center justify-center h-16 ${
-                items.canceled ? "bg-slate-200" : "bg-lime-400"
-              }`}
-              onPress={() =>
-                Alert.alert(
-                  "Order Cancellation", // Title of the alert
-                  "This order will be canceled.", // Message to display
-                  [
-                    {
-                      text: "Cancel", // Text for the Cancel button
-                      onPress: () => console.log("Cancel Pressed"), // Action when Cancel is pressed
-                      style: "cancel", // Optional: Adds a visual style to indicate it's a cancel action
-                    },
-                    {
-                      text: "OK", // Text for the OK button
-                      onPress: () => handleCnacelOrder(items.$id), // Action when OK is pressed
-                    },
-                  ],
-                  { cancelable: false } // Optional: Prevents dismissing the alert by tapping outside
-                )
-              }
-              disabled={items.canceled}
-            >
-              <Text>cancel order</Text>
-            </TouchableOpacity>
-          </View>
-        ))}
+        <View className="gap-3">
+          {data.map(
+            (
+              {
+                $id,
+                price,
+                canceled,
+                completed,
+                securityCode,
+                gigId,
+                date,
+                buyerId,
+              },
+              i
+            ) => {
+              const dateFormat = new Date(date).toLocaleDateString();
+              return (
+                <TouchableOpacity
+                  activeOpacity={1}
+                  onPress={() =>
+                    router.push({
+                      pathname: "/order",
+                      params: {
+                        $id,
+                        price,
+                        canceled,
+                        completed,
+                        securityCode,
+                        gigId,
+                        date,
+                        buyerId,
+                      },
+                    })
+                  }
+                  key={i}
+                  className=" rounded-lg flex-row items-center justify-between py-5  bg-lime-200 px-4"
+                >
+                  <View>
+                    <Text>
+                      {canceled ? "canceled" : completed ? "completed" : "live"}
+                    </Text>
+                    <Text className="text-xl font-bold">{price}.Rs</Text>
+                  </View>
+                  <View className=" items-end">
+                    <Text className="text-xl font-bold">
+                      {buyerId.username}
+                    </Text>
+                    <Text>{dateFormat}</Text>
+                  </View>
+                </TouchableOpacity>
+              );
+            }
+          )}
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
