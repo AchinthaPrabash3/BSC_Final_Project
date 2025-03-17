@@ -10,7 +10,7 @@ import {
   RefreshControl,
 } from "react-native";
 import { useGlobalContext } from "../../context/GlobalProvider";
-import { Link, router } from "expo-router";
+import { router } from "expo-router";
 import {
   getUserBookedGigs,
   getUserBoughtTickets,
@@ -19,12 +19,11 @@ import {
   signOut,
 } from "../../lib/appwrite";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { AntDesign, Ionicons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import useAppwrite from "../../hooks/useAppwrite";
-import ProductCard from "../../components/ProductCard";
-import EventCard from "../../components/EventCard";
 import ProductCardProfile from "../../components/ProductCardProfile";
 import EventCardProfile from "../../components/EventCardProfile";
+import ProfileStats from "../../components/ProfileStats";
 
 const Profile = () => {
   const { setIsLoggedIn, setUser, user } = useGlobalContext();
@@ -99,7 +98,14 @@ const Profile = () => {
             className="size-[100px] mx-auto mt-5 rounded-full bg-white"
             resizeMode="contain"
           />
-          <View></View>
+          <View className="px-1">
+            <ProfileStats
+              gigData={gigData}
+              eventData={eventData}
+              baughtGigs={baughtGigs}
+              tickets={tickets}
+            />
+          </View>
           <View className="border-b border-slate-500 flex-row w-full mt-5 gap-3 px-3 pb-3">
             {tabData.map((item, i) => (
               <TouchableOpacity

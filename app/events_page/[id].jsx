@@ -13,11 +13,16 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import useAppwrite from "../../hooks/useAppwrite";
 import { useGlobalContext } from "../../context/GlobalProvider";
-import { buyTicket } from "../../lib/appwrite";
+import { buyTicket, getTicketInfo } from "../../lib/appwrite";
 
 const EventID = () => {
+  const { $id } = useLocalSearchParams();
+
+  const [showDate, setShowDate] = useState("");
+  const [showTime, setShowTime] = useState("");
+
+  const { data, reFeatch } = useAppwrite(getTicketInfo($id));
   const {
-    $id,
     eventname,
     date,
     prices,
@@ -26,27 +31,30 @@ const EventID = () => {
     banner,
     event_desc,
     price_titles,
-  } = useLocalSearchParams();
+  } = data;
 
-  const [showDate, setShowDate] = useState("");
-  const [showTime, setShowTime] = useState("");
-  const dates = new Date(date);
   useEffect(() => {
+    if (!date) return; // Ensure date exists before processing
+
+    const dates = new Date(date);
+    if (isNaN(dates.getTime())) return; // Check if the date is valid
+
     const year = dates.getFullYear();
     const month = dates.getMonth();
     const day = dates.getDate();
     const hour = dates.getUTCHours();
     const amPm = hour >= 12 ? "PM" : "AM";
-    const formatedHour = (hour % 12 || 12).toString().padStart(2, "0");
+    const formattedHour = (hour % 12 || 12).toString().padStart(2, "0");
     const minutes = dates.getUTCMinutes().toString().padStart(2, "0");
+
     setShowDate(
       `${year}-${(month + 1).toString().padStart(2, "0")}-${day
         .toString()
         .padStart(2, "0")}`
     );
 
-    setShowTime(`${formatedHour}:${minutes} ${amPm}`);
-  }, []);
+    setShowTime(`${formattedHour}:${minutes} ${amPm}`);
+  }, [date]); // Run effect when `date` changes
 
   const { user } = useGlobalContext();
   const [selected, setSelected] = useState(null);
@@ -72,6 +80,9 @@ const EventID = () => {
     setBuying(true);
     try {
       await buyTicket({ ...ticketInfo });
+      setTimeout(() => {
+        reFeatch?.();
+      }, 500);
     } catch (error) {
       console.error(error);
     } finally {
@@ -82,7 +93,11 @@ const EventID = () => {
   return (
     <SafeAreaView className="h-screen">
       <ScrollView
-        contentContainerStyle={{ padding: 10, paddingBottom: 15, flexGrow: 1 }}
+        contentContainerStyle={{
+          padding: 10,
+          paddingBottom: 15,
+          flexGrow: 1,
+        }}
       >
         <View className=" flex-row items-center gap-4">
           <TouchableOpacity onPress={() => router.back()}>
@@ -106,7 +121,7 @@ const EventID = () => {
           </View>
         </View>
         <View className="gap-2 mt-4">
-          {JSON.parse(prices).map((price, i) => (
+          {prices?.map((price, i) => (
             <View
               key={i}
               className={`flex-row items-center justify-between p-2 rounded-lg ${
@@ -114,13 +129,11 @@ const EventID = () => {
               } `}
             >
               <View className="flex-row gap-4">
-                <Text className="capitalize font-bold">
-                  {JSON.parse(price_titles)[i]}
-                </Text>
+                <Text className="capitalize font-bold">{price_titles[i]}</Text>
                 <Text>{price}.Rs</Text>
               </View>
               <View className="flex-row items-center gap-4">
-                <Text>{JSON.parse(ticket_count)[i]}</Text>
+                <Text>{ticket_count[i]}</Text>
                 <TouchableOpacity
                   className={`px-7 py-4 ${
                     selected === i ? "bg-white" : "bg-lime-400"

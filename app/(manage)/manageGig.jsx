@@ -17,6 +17,7 @@ import {
   Ionicons,
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
+import GigStats from "../../components/GigStats";
 
 const ManageGig = () => {
   const { id, title, description, image, rating, activeOrders } =
@@ -67,14 +68,29 @@ const ManageGig = () => {
             <MaterialCommunityIcons name="delete-outline" size={24} />
           </TouchableOpacity>
         </View>
+        <View className="mb-5">
+          <GigStats activeOrders={activeOrders} id={id} />
+        </View>
         <Image
           source={{ uri: image }}
           className="w-full h-[200px] rounded-xl"
           resizeMode="cover"
         />
-        <View className="w-full items-center justify-end p-2 flex-row gap-2">
+        <TouchableOpacity
+          className="w-full items-center justify-end p-2 flex-row gap-2"
+          onPress={() =>
+            router.push({
+              pathname: "editGig",
+              params: {
+                id,
+              },
+            })
+          }
+        >
+          <Text>Edit Gig</Text>
           <AntDesign name="edit" size={24} />
-        </View>
+        </TouchableOpacity>
+
         <View className="gap-3">
           {data.map(
             (
@@ -94,6 +110,7 @@ const ManageGig = () => {
               return (
                 <TouchableOpacity
                   activeOpacity={1}
+                  disabled={canceled || completed}
                   onPress={() =>
                     router.push({
                       pathname: "/order",

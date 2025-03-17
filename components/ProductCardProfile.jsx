@@ -23,7 +23,7 @@ const ProductCardProfile = ({
     setOrders(0);
 
     const totalOrders = data.reduce((acc, item) => {
-      if (item.canceled == false) {
+      if (item.canceled == false && item.completed == false) {
         return acc + 1;
       }
       return acc;

@@ -3,7 +3,7 @@ import { router } from "expo-router";
 import React from "react";
 import { StyleSheet, View, Text, Image, TouchableOpacity } from "react-native";
 import useAppwrite from "../hooks/useAppwrite";
-import {getTicketSails} from "../lib/appwrite";
+import { getTicketSails } from "../lib/appwrite";
 
 const EventCardProfile = ({
   $id,
@@ -15,9 +15,7 @@ const EventCardProfile = ({
   banner,
   event_desc,
 }) => {
-
-    const {data} = useAppwrite(getTicketSails($id));
-    console.log(data)
+  const { data } = useAppwrite(getTicketSails($id));
 
   return (
     <View className="flex-row bg-lime-200 gap-3 h-[180px] items-center p-3">
@@ -43,6 +41,8 @@ const EventCardProfile = ({
                   description: event_desc,
                   image: banner,
                   date: date,
+                  prices: JSON.stringify(prices),
+                  location,
                 },
               })
             }
