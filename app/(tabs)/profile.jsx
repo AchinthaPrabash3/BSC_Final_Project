@@ -24,6 +24,8 @@ import useAppwrite from "../../hooks/useAppwrite";
 import ProductCardProfile from "../../components/ProductCardProfile";
 import EventCardProfile from "../../components/EventCardProfile";
 import ProfileStats from "../../components/ProfileStats";
+import BaughtGigCard from "../../components/BaughtGigCard";
+import BaughtTickets from "../../components/BaughtTickets";
 
 const Profile = () => {
   const { setIsLoggedIn, setUser, user } = useGlobalContext();
@@ -74,8 +76,7 @@ const Profile = () => {
         }
       >
         <View>
-          <View className="relative items-center justify-center flex-row flex-1">
-            <Text className="text-xl font-bold">{user.username}</Text>
+          <View className="relative items-center justify-center flex-row flex-1 pb-3 pt-4">
             <View className="gap-4 items-center justify-end absolute right-1 flex-row">
               <TouchableOpacity className="right-3">
                 <Ionicons name="settings-outline" size={24} />
@@ -99,12 +100,15 @@ const Profile = () => {
             resizeMode="contain"
           />
           <View className="px-1">
-            <ProfileStats
+            <Text className="text-xl font-bold text-center">
+              {user.username}
+            </Text>
+            {/* <ProfileStats
               gigData={gigData}
               eventData={eventData}
               baughtGigs={baughtGigs}
               tickets={tickets}
-            />
+            /> */}
           </View>
           <View className="border-b border-slate-500 flex-row w-full mt-5 gap-3 px-3 pb-3">
             {tabData.map((item, i) => (
@@ -155,17 +159,31 @@ const Profile = () => {
               </View>
             ) : tab == 2 ? (
               <View>
-                {baughtGigs?.map((item, i) => {
-                  if (item?.gigId?.title !== null) {
-                    return <Text key={i}>{item?.gigId?.title}</Text>;
-                  }
-                })}
+                <Text className="font-bold py-3 border-b mb-3">
+                  Orderd services and products
+                </Text>
 
-                {tickets?.map((ticket, i) => {
-                  if (ticket?.eventId?.eventname !== null) {
-                    return <Text key={i}>{ticket?.eventId?.eventname}</Text>;
-                  }
-                })}
+                <View className="gap-3 border-b pb-2">
+                  {baughtGigs?.map((item, i) => {
+                    if (
+                      item?.gigId !== null &&
+                      !item?.rated &&
+                      !item?.canceled
+                    ) {
+                      return <BaughtGigCard {...item} key={i} />;
+                    }
+                  })}
+                </View>
+                <Text className="font-bold py-3 border-b mb-3">
+                  Bought Tickets
+                </Text>
+                <View className="gap-3 border-b mb-2 pb-2">
+                  {tickets?.map((ticket, i) => {
+                    if (ticket?.eventId?.eventname !== null) {
+                      return <BaughtTickets key={i} {...ticket} />;
+                    }
+                  })}
+                </View>
               </View>
             ) : (
               ""

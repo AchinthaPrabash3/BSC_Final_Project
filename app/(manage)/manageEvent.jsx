@@ -77,6 +77,21 @@ const ManageEvent = () => {
             </Text>
           </View>
         </View>
+        <TouchableOpacity
+          className="flex-row items-center my-4 gap-2"
+          disabled={new Date() > new Date(date)}
+          onPress={() =>
+            router.push({
+              pathname: "editEvent",
+              params: {
+                id,
+              },
+            })
+          }
+        >
+          <AntDesign name="edit" size={24} />
+          <Text>Edit Event</Text>
+        </TouchableOpacity>
         <View className="p-1">
           <Text className="font-bold text-lg">Description</Text>
           <Text>{description}</Text>

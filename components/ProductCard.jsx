@@ -11,7 +11,7 @@ const ProductCard = ({
   rating,
   prices,
   price_desc,
-    price_titles,
+  price_titles,
   creator: { avatar, username, user_rating, $id: creatorId },
 }) => {
   const [color, setColor] = useState(false);
@@ -31,7 +31,7 @@ const ProductCard = ({
         avatar: avatar,
         userRating: user_rating,
         creatorId: creatorId,
-        price_titles:JSON.stringify(price_titles),
+        price_titles: JSON.stringify(price_titles),
       },
     });
 
@@ -80,7 +80,7 @@ const ProductCard = ({
                 size={16}
                 key={index}
                 name="star"
-                color={index < rating ? "#FAD5A5" : "#808080"}
+                color={index < Math.round(rating) ? "#FAD5A5" : "#808080"}
               />
             ))}
           </View>
