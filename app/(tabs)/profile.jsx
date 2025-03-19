@@ -187,7 +187,10 @@ const Profile = () => {
                 <Colapsable title={" Bought Tickets"}>
                   <View className="gap-3  mb-2 pb-2">
                     {tickets?.map((ticket, i) => {
-                      if (ticket?.eventId?.eventname !== null) {
+                      if (
+                        ticket?.eventId?.eventname !== null &&
+                        !(new Date() > new Date(ticket?.eventId?.date))
+                      ) {
                         return <BaughtTickets key={i} {...ticket} />;
                       }
                     })}

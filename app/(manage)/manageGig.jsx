@@ -48,7 +48,7 @@ const ManageGig = () => {
         <View className="flex-row items-center justify-between  py-3 gap-3">
           <View className="flex-row items-center gap-3">
             <TouchableOpacity onPress={() => router.back()}>
-              <Ionicons name="arrow-back" size={24} />
+              <Ionicons name="chevron-back-outline" size={32} />
             </TouchableOpacity>
             <View>
               <Text>{title}</Text>

@@ -26,6 +26,7 @@ const EditGig = () => {
     title: "",
     content: null,
     description: "",
+    contactNum: "",
     price_titles: [],
     prices: [],
     price_desc: [],
@@ -42,6 +43,7 @@ const EditGig = () => {
       prices: data.prices || [],
       price_desc: data.price_desc || [],
       gig_type: data.gig_type || [],
+      contactNum: data.contactNum || "",
     });
   }, [data]);
 
@@ -192,6 +194,18 @@ const EditGig = () => {
             containerStyles={"mt-5"}
             max_lenth={80}
             inputStyles={"h-16"}
+          />
+          <CreateFormInput
+            handleChange={(e) =>
+              setGigData((prev) => ({ ...prev, contactNum: e }))
+            }
+            value={gigData.contactNum}
+            textStyles={"mb-2 capitalize"}
+            placeholder={"catchy title ....."}
+            containerStyles={"mt-5"}
+            max_lenth={10}
+            inputStyles={"h-16"}
+            keyboardType="phone-pad"
           />
           <View className="mt-5">
             <Text>Banner Image</Text>
