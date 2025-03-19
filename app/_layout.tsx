@@ -21,7 +21,16 @@ export default function RootLayout() {
             options={{ headerShown: false }}
           />
           <Stack.Screen name="(manage)" options={{ headerShown: false }} />
-          <Stack.Screen name={'search/[query]'} options={{ headerShown: false }} />
+          <Stack.Screen
+            name={"search/[query]"}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen name="userPage/[id]" options={{ headerShown: false }} />
+          <Stack.Screen
+            name="search_events/[query]"
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen name="(settings)" options={{ headerShown: false }} />
         </Stack>
       </GlobalProvider>
       <StatusBar style="dark" />

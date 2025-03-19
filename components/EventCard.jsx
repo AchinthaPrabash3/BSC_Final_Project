@@ -67,14 +67,18 @@ const EventCard = ({
             </Text>
           </View>
           <View className="flex-row w-full justify-between">
-            <View className="flex-row gap-2 w-full">
-              <Text className="capitalize ">
-                at <Text className="font-bold text-lg">{location}</Text>
+            <View className="gap-2 w-full">
+              <Text className="capitalize leading-tight ">
+                at{" "}
+                <Text className="font-bold text-lg leading-none">
+                  {location}
+                </Text>
               </Text>
-              <Text className="capitalize ">
-                -{" "}
-                <Text className="font-bold text-lg ">
-                  {showDate} from {showTime}
+              <Text className=" leading-none">
+                <Text className="font-bold text-lg  leading-none">
+                  {showDate}{" "}
+                  <Text className=" capitalize font-normal">from</Text>{" "}
+                  {showTime}
                 </Text>
               </Text>
             </View>

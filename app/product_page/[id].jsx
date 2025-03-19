@@ -33,6 +33,7 @@ const ProductPage = () => {
     creator,
     rating,
     price_titles,
+    contactNum,
   } = data;
 
   const { user } = useGlobalContext();
@@ -104,8 +105,9 @@ const ProductPage = () => {
                 source={{ uri: creator?.avatar }}
                 className="size-12 rounded-full"
               />
-              <View>
+              <View className="items-end">
                 <Text className="font-bold text-xl">{creator?.username}</Text>
+
                 {/* <View className="flex-row">
                                     {[...Array(5)].map((_, index) => (
                                         <AntDesign
@@ -126,6 +128,7 @@ const ProductPage = () => {
           />
           <View className="gap-1 my-4">
             <Text className="text-2xl">{data?.title}</Text>
+            <Text>contact num - {contactNum}</Text>
             <View className="flex-row">
               {[...Array(5)].map((_, index) => (
                 <AntDesign

@@ -172,7 +172,7 @@ const EditGig = () => {
 
   return (
     <SafeAreaView>
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <View>
           <TouchableOpacity>
             <Ionicons
@@ -231,7 +231,7 @@ const EditGig = () => {
             value={gigData.description}
             textStyles={"mb-2 capitalize"}
             containerStyles={"mt-5"}
-            max_lenth={200}
+            max_lenth={400}
             numOfLines={4}
             multyline={true}
             textAlign={"top"}
@@ -239,26 +239,36 @@ const EditGig = () => {
           />
           <Text>pricing tiers</Text>
           <View className="w-full h-[300px] border border-dashed rounded my-4 p-2">
-            <ScrollView horizontal contentContainerStyle={{ flexGrow: 1 }}>
+            <ScrollView
+              showsHorizontalScrollIndicator={false}
+              horizontal={true}
+              contentContainerStyle={{ flexGrow: 1 }}
+              className="flex-row"
+            >
               {gigData.prices.length > 0 ? (
-                <View>
+                <View className=" flex-row">
                   {gigData.prices.map((item, i) => (
                     <TouchableOpacity
                       key={i}
                       onPress={() => handleEditPricing(i)}
-                      className="mr-2"
+                      className="mr-2 w-[345px] flex-1 bg-white p-2 rounded-xl border border-lime-400"
                     >
-                      <View className="bg-white p-2 rounded-lg">
-                        {/* Close Icon */}
-                        <TouchableOpacity
-                          onPress={() => handleDeletePricing(i)} // Delete the pricing tier
-                          className="self-end"
-                        >
-                          <Ionicons name="close" size={20} color="red" />
-                        </TouchableOpacity>
-                        <Text>{gigData.price_titles[i]}</Text>
-                        <Text>{gigData.price_desc[i]}</Text>
-                        <Text>{item}</Text>
+                      <TouchableOpacity
+                        onPress={() => handleDeletePricing(i)} // Delete the pricing tier
+                        className="self-end"
+                      >
+                        <Ionicons name="close" size={20} color="red" />
+                      </TouchableOpacity>
+                      <View className=" p-2 rounded-lg flex-1 ">
+                        <Text className="text-center font-bold text-xl">
+                          {gigData.price_titles[i]}
+                        </Text>
+                        <Text className="text-center font-bold text-2xl my-3 ">
+                          {item}.Rs
+                        </Text>
+                        <Text className="text-justify font-light leading-normal">
+                          {gigData.price_desc[i]}
+                        </Text>
                       </View>
                     </TouchableOpacity>
                   ))}
@@ -316,7 +326,11 @@ const EditGig = () => {
             <Text className="capitalize">tags</Text>
             <View className="mt-1">
               <View className="w-full h-12 border border-dashed p-1 mb-2">
-                <ScrollView horizontal contentContainerStyle={{ gap: 5 }}>
+                <ScrollView
+                  horizontal
+                  contentContainerStyle={{ gap: 5 }}
+                  showsHorizontalScrollIndicator={false}
+                >
                   {gigData.gig_type.length > 0 ? (
                     gigData.gig_type.map((item, index) => (
                       <View

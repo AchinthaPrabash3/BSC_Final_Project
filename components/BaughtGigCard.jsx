@@ -40,25 +40,26 @@ const BaughtGigCard = ({
   };
 
   return (
-    <View className="bg-lime-400 p-4 rounded-lg">
+    <View className="bg-white shadow-md rounded-2xl p-4 border border-gray-200 mb-4">
+      {/* Gig Title (Clickable) */}
       <TouchableOpacity
         onPress={() =>
           router.push({
             pathname: "product_page/[id]",
-            params: {
-              id: gigId.$id,
-            },
+            params: { id: gigId.$id },
           })
         }
       >
-        <Text className=" mb-2 font-bold">{gigId.title}</Text>
+        <Text className="text-lg font-bold text-gray-800">{gigId.title}</Text>
       </TouchableOpacity>
-      <View className="flex-row justify-between">
+
+      {/* Gig Details */}
+      <View className="flex-row justify-between items-center mt-2">
         <View>
-          <Text className="text-xl font-bold self-start bg-white px-1 rounded-lg">
+          <Text className="text-lg font-semibold text-gray-700 bg-lime-500 px-3 py-1 rounded-lg self-start ">
             {price} Rs
           </Text>
-          <Text className="text-sm pl-1">
+          <Text className="text-gray-500 text-sm mt-1">
             {date
               ? new Date(date).toLocaleDateString("en-GB", {
                   day: "2-digit",
@@ -68,35 +69,43 @@ const BaughtGigCard = ({
               : "Invalid Date"}
           </Text>
         </View>
+
         <Text
-          className={`${
+          className={`text-sm font-medium px-3 py-1 rounded-lg ${
             canceled
-              ? "text-red-800"
+              ? "bg-red-100 text-red-700"
               : completed
-              ? "text-lime-800"
-              : "text-black"
-          } self-start bg-white font-medium p-2 rounded-lg`}
+              ? "bg-green-100 text-green-700"
+              : "bg-gray-100 text-gray-700"
+          }`}
         >
           {canceled ? "Canceled" : completed ? "Completed" : "Pending"}
         </Text>
       </View>
-      <View className="flex-row justify-between mt-2 items-center">
-        <Text
-          className="text-2xl bg-white px-2 rounded-lg"
-          style={{ letterSpacing: 4 }}
-        >
+
+      {/* Security Code & Rating Button */}
+      <View className="flex-row justify-between items-center mt-3">
+        <Text className="text-xl font-mono tracking-widest bg-gray-200 px-3 py-1 rounded-lg">
           {securityCode || "N/A"}
         </Text>
+
         <TouchableOpacity
           disabled={!completed || rated}
-          className="flex-row items-center gap-2"
+          className={`flex-row items-center gap-2 ${
+            !completed || rated ? "opacity-50" : ""
+          }`}
           onPress={() => setModalVisible(true)}
         >
-          <Text className="capitalize">Rate</Text>
-          <Ionicons name="star" size={20} color="white" />
+          <Text className="text-gray-800 text-sm font-semibold">Rate</Text>
+          <Ionicons
+            name="star"
+            size={20}
+            color={completed && !rated ? "gold" : "gray"}
+          />
         </TouchableOpacity>
       </View>
 
+      {/* Rating Modal */}
       <Modal
         animationType="slide"
         transparent={true}
@@ -104,16 +113,20 @@ const BaughtGigCard = ({
         onRequestClose={() => setModalVisible(false)}
       >
         <View className="flex-1 justify-center items-center bg-black/50">
-          <View className="bg-white p-5 rounded-lg w-80">
-            <Text className="text-lg font-bold mb-2">Rate this gig</Text>
+          <View className="bg-white p-6 rounded-lg w-80 shadow-lg">
+            <Text className="text-lg font-bold mb-3 text-center">
+              Rate this gig
+            </Text>
+
             <TextInput
-              className="border p-2 rounded-lg text-center"
+              className="border p-3 rounded-lg text-center text-lg"
               placeholder="Enter rating (1-5)"
               keyboardType="numeric"
               maxLength={1}
               value={rating}
               onChangeText={(text) => setRating(text.replace(/[^1-5]/g, ""))}
             />
+
             <View className="flex-row justify-between mt-4">
               <Button title="Cancel" onPress={() => setModalVisible(false)} />
               <Button title="Submit" onPress={submitRating} />

@@ -14,8 +14,6 @@ const ProductCard = ({
   price_titles,
   creator: { avatar, username, user_rating, $id: creatorId },
 }) => {
-  const [color, setColor] = useState(false);
-
   const passData = () =>
     router.push({
       pathname: "/product_page/[id]",
@@ -47,7 +45,16 @@ const ProductCard = ({
     >
       <View className="flex-row gap-3 items-center justify-between w-full">
         <View className="flex-row items-center gap-3">
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() =>
+              router.push({
+                pathname: "userPage/[id]",
+                params: {
+                  id: creatorId,
+                },
+              })
+            }
+          >
             <Image source={{ uri: avatar }} className="size-10 rounded-full" />
           </TouchableOpacity>
           <Text className=" capitalize">{username}</Text>

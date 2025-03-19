@@ -22,6 +22,7 @@ const CreateGig = () => {
   const { user } = useGlobalContext();
   const [gigData, setGigData] = useState({
     title: "",
+    contactNum: "",
     content: null,
     description: "",
     creator: user.$id,
@@ -181,7 +182,18 @@ const CreateGig = () => {
           max_lenth={80}
           inputStyles={"h-16"}
         />
-
+        <CreateFormInput
+          handleChange={(e) =>
+            setGigData((prev) => ({ ...prev, contactNum: e }))
+          }
+          value={gigData.contactNum}
+          textStyles={"mb-2 capitalize"}
+          placeholder={"catchy title ....."}
+          containerStyles={"mt-5"}
+          max_lenth={10}
+          inputStyles={"h-16"}
+          keyboardType="phone-pad"
+        />
         {/* Banner Image */}
         <View className="mt-5">
           <Text>Banner Image</Text>
@@ -234,19 +246,24 @@ const CreateGig = () => {
                   <TouchableOpacity
                     key={i}
                     onPress={() => handleEditPricing(i)}
-                    className="mr-2"
+                    className="mr-2 w-[337px] flex-1 bg-white p-2 rounded-xl border border-lime-400"
                   >
-                    <View className="bg-white p-2 rounded-lg">
-                      {/* Close Icon */}
-                      <TouchableOpacity
-                        onPress={() => handleDeletePricing(i)} // Delete the pricing tier
-                        className="self-end"
-                      >
-                        <Ionicons name="close" size={20} color="red" />
-                      </TouchableOpacity>
-                      <Text>{gigData.price_titles[i]}</Text>
-                      <Text>{gigData.price_desc[i]}</Text>
-                      <Text>{item}</Text>
+                    <TouchableOpacity
+                      onPress={() => handleDeletePricing(i)} // Delete the pricing tier
+                      className="self-end"
+                    >
+                      <Ionicons name="close" size={20} color="red" />
+                    </TouchableOpacity>
+                    <View className=" p-2 rounded-lg flex-1 ">
+                      <Text className="text-center font-bold text-xl">
+                        {gigData.price_titles[i]}
+                      </Text>
+                      <Text className="text-center font-bold text-2xl my-3 ">
+                        {item}.Rs
+                      </Text>
+                      <Text className="text-justify font-light leading-normal">
+                        {gigData.price_desc[i]}
+                      </Text>
                     </View>
                   </TouchableOpacity>
                 ))}

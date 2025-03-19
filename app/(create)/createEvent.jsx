@@ -182,6 +182,7 @@ const CreateEvent = () => {
               setEventData((data) => ({ ...data, title: e }))
             }
             inputStyles={"h-16"}
+            max_lenth={80}
           />
           <View className="mt-3">
             <Text className="mb-2 font-bold">Select Image</Text>
@@ -206,7 +207,7 @@ const CreateEvent = () => {
             handleChange={(e) =>
               setEventData((data) => ({ ...data, event_desc: e }))
             }
-            max_lenth={200}
+            max_lenth={300}
             containerStyles={"mt-4"}
             textStyles={"mb-2"}
             textAlign="top"
@@ -242,6 +243,7 @@ const CreateEvent = () => {
             handleChange={(e) =>
               setEventData((prev) => ({ ...prev, location: e }))
             }
+            max_lenth={100}
           />
           <View className="mt-4">
             <Text className="mb-2">Add Tickets</Text>
@@ -250,13 +252,27 @@ const CreateEvent = () => {
                 {eventData.prices.length ? (
                   eventData.prices.map((price, index) => (
                     <TouchableOpacity
+                      className="w-[340px] h-32 bg-white rounded-xl justify-center p-3 border border-lime-400 mb-2"
                       key={index}
                       onPress={() => handleEditng(index)}
                     >
-                      <Text>{price}</Text>
-                      <TouchableOpacity onPress={() => handleDelete(index)}>
-                        <Ionicons name="close" size={24} />
+                      <TouchableOpacity
+                        onPress={() => handleDelete(index)}
+                        className="self-end"
+                      >
+                        <Ionicons name="close" size={24} color={"red"} />
                       </TouchableOpacity>
+                      <View className="flex-1 flex-row justify-between items-center mt-3">
+                        <View>
+                          <Text className="text-xl font-semibold">
+                            {eventData.price_titles[index]}
+                          </Text>
+                          <Text className=" font-light ">
+                            {eventData.ticket_count[index]} Tickets
+                          </Text>
+                        </View>
+                        <Text className="text-xl font-bold">{price}.Rs</Text>
+                      </View>
                     </TouchableOpacity>
                   ))
                 ) : (
@@ -268,6 +284,7 @@ const CreateEvent = () => {
             </View>
             <View className="mt-6">
               <CreateFormInput
+                max_lenth={80}
                 textStyles={"mb-2"}
                 value={pricings.pricing_title}
                 title={"Ticket Name"}
@@ -277,6 +294,7 @@ const CreateEvent = () => {
                 inputStyles={"h-16"}
               />
               <CreateFormInput
+                max_lenth={80}
                 textStyles={"mb-2"}
                 value={pricings.pricing}
                 title={"Ticket Price"}
@@ -287,6 +305,7 @@ const CreateEvent = () => {
                 keyboardType="numeric"
               />
               <CreateFormInput
+                max_lenth={80}
                 textStyles={"mb-2"}
                 value={pricings.ticket_count}
                 title={"Ticket Count"}

@@ -15,6 +15,7 @@ import {
   getUserBookedGigs,
   getUserBoughtTickets,
   getUserEvents,
+  getUserInfo,
   getUserPosts,
   signOut,
 } from "../../lib/appwrite";
@@ -26,6 +27,7 @@ import EventCardProfile from "../../components/EventCardProfile";
 import ProfileStats from "../../components/ProfileStats";
 import BaughtGigCard from "../../components/BaughtGigCard";
 import BaughtTickets from "../../components/BaughtTickets";
+import Colapsable from "../../components/Colapsable";
 
 const Profile = () => {
   const { setIsLoggedIn, setUser, user } = useGlobalContext();
@@ -41,6 +43,9 @@ const Profile = () => {
   const { data: tickets, reFeatch: reFeatchTickets } = useAppwrite(
     getUserBoughtTickets(user.$id)
   );
+  const { data: userInfo, reFeatch: refreshUinfo } = useAppwrite(
+    getUserInfo(user.$id)
+  );
 
   const tabData = ["Gigs", "Events", "bought"];
   const [tab, setTab] = useState(0);
@@ -53,6 +58,7 @@ const Profile = () => {
       await refetchEvents();
       await refetchBoughtGigs();
       await reFeatchTickets();
+      await refreshUinfo();
     } catch (error) {
       console.error("Error refreshing data:", error);
     } finally {
@@ -61,7 +67,7 @@ const Profile = () => {
   };
 
   return (
-    <SafeAreaView className="h-screen">
+    <SafeAreaView className="h-screen p-2">
       <ScrollView
         showsVerticalScrollIndicator={false}
         className="relative"
@@ -77,8 +83,17 @@ const Profile = () => {
       >
         <View>
           <View className="relative items-center justify-center flex-row flex-1 pb-3 pt-4">
-            <View className="gap-4 items-center justify-end absolute right-1 flex-row">
-              <TouchableOpacity className="right-3">
+            <View className="gap-4 items-center justify-between w-full absolute flex-row p-2 pt-4">
+              <TouchableOpacity
+                onPress={() =>
+                  router.push({
+                    pathname: "(settings)/settings",
+                    params: {
+                      id: user.$id,
+                    },
+                  })
+                }
+              >
                 <Ionicons name="settings-outline" size={24} />
               </TouchableOpacity>
               <TouchableOpacity
@@ -88,27 +103,23 @@ const Profile = () => {
                   signOut();
                   router.replace("(auth)");
                 }}
-                className="right-3"
               >
                 <Ionicons name="log-out-outline" size={24} />
               </TouchableOpacity>
             </View>
           </View>
           <Image
-            source={{ uri: user.avatar }}
+            source={{ uri: userInfo?.avatar }}
             className="size-[100px] mx-auto mt-5 rounded-full bg-white"
             resizeMode="contain"
           />
           <View className="px-1">
             <Text className="text-xl font-bold text-center">
-              {user.username}
+              {userInfo?.username}
             </Text>
-            {/* <ProfileStats
-              gigData={gigData}
-              eventData={eventData}
-              baughtGigs={baughtGigs}
-              tickets={tickets}
-            /> */}
+            <Text className="w-[300px] mx-auto text-center mt-3 ">
+              {userInfo.bio}
+            </Text>
           </View>
           <View className="border-b border-slate-500 flex-row w-full mt-5 gap-3 px-3 pb-3">
             {tabData.map((item, i) => (
@@ -116,7 +127,7 @@ const Profile = () => {
                 key={i}
                 onPress={() => setTab(i)}
                 className={`flex-1 py-3 bg-lime-400s rounded-xl ${
-                  i === tab ? "bg-lime-400" : "bg-white"
+                  i === tab ? "bg-lime-400" : "bg-slate-200"
                 }`}
               >
                 <Text className="text-center">{item}</Text>
@@ -127,7 +138,7 @@ const Profile = () => {
             {tab == 0 ? (
               <View>
                 <TouchableOpacity
-                  className="h-[100px] w-full flex-row items-center justify-center gap-3 border-2 border-dashed border-second rounded-xl bg-white"
+                  className="h-[80px] w-full flex-row items-center justify-center gap-3 border-2 border-dashed border-slate-600 rounded-xl bg-white"
                   onPress={() => router.push("createGig")}
                 >
                   <Text className="capitalize font-bold">create a gig</Text>
@@ -145,7 +156,7 @@ const Profile = () => {
             ) : tab == 1 ? (
               <View>
                 <TouchableOpacity
-                  className="h-[100px] w-full flex-row items-center justify-center gap-3 border-2 border-dashed border-second rounded-xl bg-white mb-5"
+                  className="h-[80px] w-full flex-row items-center justify-center gap-3 border-2 border-dashed border-slate-600 rounded-xl bg-white"
                   onPress={() => router.push("createEvent")}
                 >
                   <Text className="capitalize font-bold">create a event</Text>
@@ -159,31 +170,29 @@ const Profile = () => {
               </View>
             ) : tab == 2 ? (
               <View>
-                <Text className="font-bold py-3 border-b mb-3">
-                  Orderd services and products
-                </Text>
+                <Colapsable title={" Orderd services and products"}>
+                  <View className="gap-3  pb-2">
+                    {baughtGigs?.map((item, i) => {
+                      if (
+                        item?.gigId !== null &&
+                        !item?.rated &&
+                        !item?.canceled
+                      ) {
+                        return <BaughtGigCard {...item} key={i} />;
+                      }
+                    })}
+                  </View>
+                </Colapsable>
 
-                <View className="gap-3 border-b pb-2">
-                  {baughtGigs?.map((item, i) => {
-                    if (
-                      item?.gigId !== null &&
-                      !item?.rated &&
-                      !item?.canceled
-                    ) {
-                      return <BaughtGigCard {...item} key={i} />;
-                    }
-                  })}
-                </View>
-                <Text className="font-bold py-3 border-b mb-3">
-                  Bought Tickets
-                </Text>
-                <View className="gap-3 border-b mb-2 pb-2">
-                  {tickets?.map((ticket, i) => {
-                    if (ticket?.eventId?.eventname !== null) {
-                      return <BaughtTickets key={i} {...ticket} />;
-                    }
-                  })}
-                </View>
+                <Colapsable title={" Bought Tickets"}>
+                  <View className="gap-3  mb-2 pb-2">
+                    {tickets?.map((ticket, i) => {
+                      if (ticket?.eventId?.eventname !== null) {
+                        return <BaughtTickets key={i} {...ticket} />;
+                      }
+                    })}
+                  </View>
+                </Colapsable>
               </View>
             ) : (
               ""
