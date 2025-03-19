@@ -12,7 +12,14 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import CreateFormInput from "../../components/CreateFormInput";
 import CustomBtn from "../../components/CustomBtn";
 import Colapsable from "../../components/Colapsable";
-import { addOrUpdateBio } from "../../lib/appwrite";
+import {
+  addOrUpdateBio,
+  getUserBookedGigs,
+  getUserBoughtTickets,
+} from "../../lib/appwrite";
+import useAppwrite from "../../hooks/useAppwrite";
+import BaughtGigCard from "../../components/BaughtGigCard";
+import BaughtTickets from "../../components/BaughtTickets";
 
 const Settings = () => {
   const { id } = useLocalSearchParams();
@@ -20,6 +27,9 @@ const Settings = () => {
   const [updateing, setUpdateing] = useState(false);
   const [bioText, setBioText] = useState("");
   const [username, setUsername] = useState("");
+
+  const { data: userBaughtGigs } = useAppwrite(getUserBookedGigs(id));
+  const { data: tickets } = useAppwrite(getUserBoughtTickets(id));
 
   const addOrupdateBioT = async () => {
     try {
@@ -78,8 +88,22 @@ const Settings = () => {
             textStyles={"capitalize self-start text-center font-bold"}
           />
         </Colapsable>
-        <Colapsable title={"Order History"}></Colapsable>
-        <Colapsable title={"Ticket History"}></Colapsable>
+        <Colapsable title={"Order History"}>
+          <ScrollView className="h-[300px]">
+            {userBaughtGigs.map((gigData, i) =>
+              gigData?.gigId !== null ? <BaughtGigCard {...gigData} /> : ""
+            )}
+          </ScrollView>
+        </Colapsable>
+        <Colapsable title={"Ticket History"}>
+          {tickets.map((ticketData, i) =>
+            ticketData?.eventId?.eventname !== null ? (
+              <BaughtTickets {...ticketData} key={i} />
+            ) : (
+              ""
+            )
+          )}
+        </Colapsable>
       </ScrollView>
     </SafeAreaView>
   );

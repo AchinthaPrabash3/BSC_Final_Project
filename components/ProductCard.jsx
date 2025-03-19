@@ -95,32 +95,6 @@ const ProductCard = ({
             {prices.length > 1 ? "Starting from" : "price"} {prices[0]}.Rs
           </Text>
         </View>
-        {/* <View className="flex-row mt-2 gap-2">
-          <TouchableOpacity
-            className="rounded-xl h-16 bg-lime-400 items-center justify-center grow flex-row"
-            onPress={passData}
-            style={{
-              shadowColor: "black",
-              shadowOffset: { width: 0, height: 2 },
-              shadowOpacity: 0.2,
-              shadowRadius: 2,
-            }}
-          >
-            <Text className="capitalize text-xl font-bold ">book</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{
-              shadowColor: "black",
-              shadowOffset: { width: 0, height: 2 },
-              shadowOpacity: 0.2,
-              shadowRadius: 2,
-            }}
-            className="rounded-xl size-16 items-center justify-center bg-slate-50"
-            onPress={() => setColor(!color)}
-          >
-            <Ionicons name="heart" size={24} color={color ? "red" : "gray"} />
-          </TouchableOpacity>
-        </View> */}
       </View>
     </View>
   );

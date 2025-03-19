@@ -51,11 +51,11 @@ const ProductPage = () => {
 
   const placeOreder = async () => {
     if (!order.date) {
-      Alert.alert("please select a date");
+      Alert.alert("Please select a date");
       return;
     }
     if (!order.price) {
-      Alert.alert("please select a package");
+      Alert.alert("Please select a package");
       return;
     }
     setPlacing(true);
@@ -63,8 +63,36 @@ const ProductPage = () => {
       await buyGig({ ...order });
       router.replace("/home");
     } catch (error) {
-      console.error("Error placing order 1:", error);
+      console.error("Error placing order:", error);
+    } finally {
+      setPlacing(false);
     }
+  };
+
+  // Confirmation handler for "Book Now" button
+  const handleBookNowPress = () => {
+    Alert.alert(
+      "Confirm Booking", // Title of the alert
+      "Are you sure you want to book this gig?", // Message in the alert
+      [
+        {
+          text: "Cancel", // First button (Cancel)
+          onPress: () => console.log("Booking canceled"), // Action on cancel
+          style: "cancel", // Style for cancel button
+        },
+        {
+          text: "OK", // Second button (OK)
+          onPress: () => {
+            setOrder({
+              ...order,
+              securityCode: Math.floor(1000 + Math.random() * 9000),
+            });
+            placeOreder(); // Call the placeOreder function
+          },
+        },
+      ],
+      { cancelable: false } // Prevent dismissing the alert by tapping outside
+    );
   };
 
   return (
@@ -80,7 +108,7 @@ const ProductPage = () => {
           }}
         >
           <Text>Total : {order.price}.Rs</Text>
-          <Text>On : {order.date || "select date"}</Text>
+          <Text>On : {order.date || "Select date"}</Text>
         </View>
       ) : (
         ""
@@ -128,7 +156,7 @@ const ProductPage = () => {
           />
           <View className="gap-1 my-4">
             <Text className="text-2xl">{data?.title}</Text>
-            <Text>contact num - {contactNum}</Text>
+            <Text>Contact Num - {contactNum}</Text>
             <View className="flex-row">
               {[...Array(5)].map((_, index) => (
                 <AntDesign
@@ -173,7 +201,7 @@ const ProductPage = () => {
                     select == i ? "bg-white" : "bg-lime-400"
                   } py-4  w-full items-center justify-center rounded-md`}
                 >
-                  <Text>select</Text>
+                  <Text>Select</Text>
                 </TouchableOpacity>
               </View>
             ))}
@@ -190,14 +218,8 @@ const ProductPage = () => {
 
           <CustomBtn
             loading={placing}
-            handlePress={() => {
-              setOrder({
-                ...order,
-                securityCode: Math.floor(1000 + Math.random() * 9000),
-              });
-              placeOreder();
-            }}
-            title={"book now"}
+            handlePress={handleBookNowPress} // Use the new confirmation handler
+            title={"Book Now"}
             textStyles={"capitalize font-bold text-2xl"}
             containerStyles={"h-16 w-full bg-lime-400 rounded-lg"}
           />

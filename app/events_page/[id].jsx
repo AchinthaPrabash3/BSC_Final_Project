@@ -66,6 +66,7 @@ const EventID = () => {
   });
 
   const [buying, setBuying] = useState(false);
+
   const handleBuying = async () => {
     if (
       !ticketInfo.eventId ||
@@ -73,7 +74,7 @@ const EventID = () => {
       !ticketInfo.price ||
       ticketInfo.ticketIndex === null
     ) {
-      Alert.alert("select a ticket to perchase");
+      Alert.alert("Please select a ticket to purchase");
       return;
     }
 
@@ -90,54 +91,72 @@ const EventID = () => {
     }
   };
 
+  const handleBuyTicketPress = () => {
+    Alert.alert(
+      "Confirm Purchase", // Title of the alert
+      "Are you sure you want to buy this ticket?", // Message in the alert
+      [
+        {
+          text: "Cancel", // First button (Cancel)
+          onPress: () => console.log("Purchase canceled"), // Action on cancel
+          style: "cancel", // Style for cancel button
+        },
+        {
+          text: "OK", // Second button (OK)
+          onPress: handleBuying, // Action on OK (call handleBuying)
+        },
+      ],
+      { cancelable: false } // Prevent dismissing the alert by tapping outside
+    );
+  };
+
   return (
-    <SafeAreaView className="h-screen">
+    <SafeAreaView className="h-screen bg-gray-100 p-4">
       <ScrollView
-        contentContainerStyle={{
-          padding: 10,
-          paddingBottom: 15,
-          flexGrow: 1,
-        }}
+        contentContainerStyle={{ paddingBottom: 5, flexGrow: 1 }}
+        showsVerticalScrollIndicator={false}
       >
-        <View className=" flex-row items-center gap-4">
+        <View className="flex-row items-center gap-4 mb-4">
           <TouchableOpacity onPress={() => router.back()}>
             <Ionicons name="chevron-back-outline" size={32} />
           </TouchableOpacity>
-          <Text className="text-2xl py-2 text-center">{eventname}</Text>
+          <Text className="text-2xl font-bold flex-1 text-center capitalize">
+            {eventname}
+          </Text>
         </View>
-        <View className="">
+        <View className="rounded-lg overflow-hidden shadow-md">
           <Image
             source={{ uri: banner }}
-            className="w-full h-[500px] rounded-lg"
+            className="w-full h-[500px]"
+            resizeMode="cover"
           />
-          <View className="flex-row justify-between items-center pt-2">
-            <Text className="text-xl font-bold">{showDate}</Text>
-            <Text className="text-xl font-bold">
-              <Text className="font-normal">At </Text>
-              <Text>{location}</Text>
-              <Text className="font-normal"> From </Text>
-              <Text>{showTime}</Text>
-            </Text>
-          </View>
         </View>
-        <View className="gap-2 mt-4">
+        <View className="mt-4 p-4 bg-white rounded-lg shadow">
+          <Text className="text-lg font-semibold">📅 {showDate}</Text>
+          <Text className="text-lg font-semibold">
+            📍 {location} | 🕒 {showTime}
+          </Text>
+        </View>
+        <View className="mt-4 gap-3">
           {prices?.map((price, i) => (
             <View
               key={i}
-              className={`flex-row items-center justify-between p-2 rounded-lg ${
-                selected == i ? "bg-lime-400" : "bg-slate-200"
-              } `}
+              className={`flex-row items-center justify-between p-4 rounded-lg shadow ${
+                selected == i ? "bg-lime-400" : "bg-white"
+              }`}
             >
-              <View className="flex-row gap-4">
-                <Text className="capitalize font-bold">{price_titles[i]}</Text>
-                <Text>{price}.Rs</Text>
+              <View className="flex-row gap-4 items-center">
+                <Text className="capitalize font-bold text-lg">
+                  {price_titles[i]}
+                </Text>
+                <Text className="text-lg">{price}.Rs</Text>
               </View>
               <View className="flex-row items-center gap-4">
-                <Text>{ticket_count[i]}</Text>
+                <Text className="text-lg font-medium">🎟 {ticket_count[i]}</Text>
                 <TouchableOpacity
-                  className={`px-7 py-4 ${
+                  className={`px-6 py-2 rounded-lg shadow ${
                     selected === i ? "bg-white" : "bg-lime-400"
-                  } rounded-lg`}
+                  }`}
                   onPress={() => {
                     setSelected(i);
                     setTicketInfo({
@@ -147,18 +166,20 @@ const EventID = () => {
                     });
                   }}
                 >
-                  <Text>select</Text>
+                  <Text className="text-lg font-medium capitalize">Select</Text>
                 </TouchableOpacity>
               </View>
             </View>
           ))}
         </View>
         <TouchableOpacity
-          className="h-16 items-center justify-center mt-5 bg-lime-400 rounded-lg"
+          className="h-16 items-center justify-center mt-6 bg-lime-500 rounded-lg shadow"
           disabled={buying}
-          onPress={handleBuying}
+          onPress={handleBuyTicketPress} // Use the new confirmation handler
         >
-          <Text className="capitalize font-bold">buy</Text>
+          <Text className="text-xl font-bold capitalize text-black">
+            Buy Ticket
+          </Text>
         </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
