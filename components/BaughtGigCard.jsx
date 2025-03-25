@@ -7,8 +7,9 @@ import {
   Modal,
   Button,
   TextInput,
+  Alert,
 } from "react-native";
-import { rateGig } from "../lib/appwrite";
+import { rateGig } from "../lib/appwrite"; // Assuming cancelGig function exists
 import { router } from "expo-router";
 
 const BaughtGigCard = ({
@@ -32,6 +33,7 @@ const BaughtGigCard = ({
     }
     try {
       await rateGig(gigId, numericRating, $id);
+      alert("Thank you for your feedback!");
     } catch (error) {
       console.error(error);
     } finally {
@@ -39,8 +41,23 @@ const BaughtGigCard = ({
     }
   };
 
+  const handleCancelGig = async () => {
+    Alert.alert(
+      "Cancel Gig",
+      "Are you sure you want to cancel this gig?",
+      [
+        { text: "No", style: "cancel" },
+        {
+          text: "Yes",
+          onPress: "",
+        },
+      ],
+      { cancelable: true }
+    );
+  };
+
   return (
-    <View className="bg-white shadow-md rounded-2xl p-4 border border-gray-200 mb-4">
+    <View className="bg-white shadow-lg rounded-2xl p-4 border border-gray-200 mb-4">
       {/* Gig Title (Clickable) */}
       <TouchableOpacity
         onPress={() =>
@@ -83,26 +100,39 @@ const BaughtGigCard = ({
         </Text>
       </View>
 
-      {/* Security Code & Rating Button */}
+      {/* Security Code & Buttons */}
       <View className="flex-row justify-between items-center mt-3">
         <Text className="text-xl font-mono tracking-widest bg-gray-200 px-3 py-1 rounded-lg">
           {securityCode || "N/A"}
         </Text>
 
-        <TouchableOpacity
-          disabled={!completed || rated}
-          className={`flex-row items-center gap-2 ${
-            !completed || rated ? "opacity-50" : ""
-          }`}
-          onPress={() => setModalVisible(true)}
-        >
-          <Text className="text-gray-800 text-sm font-semibold">Rate</Text>
-          <Ionicons
-            name="star"
-            size={20}
-            color={completed && !rated ? "gold" : "gray"}
-          />
-        </TouchableOpacity>
+        <View className="flex-row items-center gap-3">
+          {/* Cancel Button */}
+          {!canceled && !completed && (
+            <TouchableOpacity
+              onPress={handleCancelGig}
+              className="bg-red-500 px-4 py-2 rounded-lg"
+            >
+              <Text className="text-white font-semibold">Cancel</Text>
+            </TouchableOpacity>
+          )}
+
+          {/* Rate Button */}
+          <TouchableOpacity
+            disabled={!completed || rated}
+            className={`flex-row items-center gap-2 px-4 py-2 rounded-lg ${
+              !completed || rated ? "opacity-50 bg-gray-300" : "bg-yellow-500"
+            }`}
+            onPress={() => setModalVisible(true)}
+          >
+            <Text className="text-white font-semibold">Rate</Text>
+            <Ionicons
+              name="star"
+              size={20}
+              color={completed && !rated ? "gold" : "gray"}
+            />
+          </TouchableOpacity>
+        </View>
       </View>
 
       {/* Rating Modal */}
@@ -118,18 +148,35 @@ const BaughtGigCard = ({
               Rate this gig
             </Text>
 
-            <TextInput
-              className="border p-3 rounded-lg text-center text-lg"
-              placeholder="Enter rating (1-5)"
-              keyboardType="numeric"
-              maxLength={1}
-              value={rating}
-              onChangeText={(text) => setRating(text.replace(/[^1-5]/g, ""))}
-            />
+            <View className="flex-row justify-center gap-2 my-3">
+              {[1, 2, 3, 4, 5].map((num) => (
+                <TouchableOpacity
+                  key={num}
+                  onPress={() => setRating(num.toString())}
+                >
+                  <Ionicons
+                    name="star"
+                    size={30}
+                    color={num <= (rating || 0) ? "gold" : "gray"}
+                  />
+                </TouchableOpacity>
+              ))}
+            </View>
 
             <View className="flex-row justify-between mt-4">
-              <Button title="Cancel" onPress={() => setModalVisible(false)} />
-              <Button title="Submit" onPress={submitRating} />
+              <TouchableOpacity
+                onPress={() => setModalVisible(false)}
+                className="bg-gray-300 px-4 py-2 rounded-lg"
+              >
+                <Text className="text-gray-800 font-semibold">Cancel</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                onPress={submitRating}
+                className="bg-blue-500 px-4 py-2 rounded-lg"
+              >
+                <Text className="text-white font-semibold">Submit</Text>
+              </TouchableOpacity>
             </View>
           </View>
         </View>

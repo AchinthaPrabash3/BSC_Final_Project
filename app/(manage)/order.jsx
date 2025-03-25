@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   View,
   Image,
+  Alert,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { completeOrder, getBookingInfo } from "../../lib/appwrite";
@@ -29,12 +30,21 @@ const Order = () => {
     }
   };
 
+  const cancelOrder = () => {
+    console.log(`Order ${$id} has been canceled.`);
+    alert("Order has been canceled.");
+    router.back();
+  };
+
   return (
     <SafeAreaView className="flex-1 bg-gray-100 p-4">
+      {/* Back Button */}
       <TouchableOpacity onPress={() => router.back()} className="mb-4">
         <Ionicons name="chevron-back-outline" size={30} />
       </TouchableOpacity>
+
       <ScrollView className="bg-white rounded-lg p-4 shadow-md">
+        {/* Gig Details */}
         {data?.gigId && (
           <View className="items-center">
             <Image
@@ -47,6 +57,8 @@ const Order = () => {
             </Text>
           </View>
         )}
+
+        {/* Buyer Details */}
         {data?.buyerId && (
           <View className="flex-row items-center mt-4">
             <Image
@@ -58,12 +70,16 @@ const Order = () => {
             </View>
           </View>
         )}
-        <Text className="text-lg font-semibold mt-4 ">
+
+        {/* Price & Date */}
+        <Text className="text-lg font-semibold mt-4">
           Price: ${data?.price}
         </Text>
         <Text className="text-lg font-semibold">
           Date: {new Date(data?.date).toDateString()}
         </Text>
+
+        {/* Security Code Input */}
         <TextInput
           value={securityCodes}
           onChangeText={setSecurityCodes}
@@ -71,6 +87,8 @@ const Order = () => {
           placeholder="Enter Security Code"
           keyboardType="decimal-pad"
         />
+
+        {/* Complete Order Button */}
         <TouchableOpacity
           onPress={() => {
             if (data?.securityCode == Number(securityCodes)) {
@@ -82,6 +100,24 @@ const Order = () => {
           className="bg-lime-400 p-4 rounded-lg mt-4 items-center"
         >
           <Text className="text-white font-bold">Complete Order</Text>
+        </TouchableOpacity>
+
+        {/* Cancel Order Button */}
+        <TouchableOpacity
+          onPress={() =>
+            Alert.alert(
+              "Cancel Order",
+              "Are you sure you want to cancel this order?",
+              [
+                { text: "No", style: "cancel" },
+                { text: "Yes", onPress: cancelOrder },
+              ],
+              { cancelable: true }
+            )
+          }
+          className="bg-red-500 p-4 rounded-lg mt-4 items-center"
+        >
+          <Text className="text-white font-bold">Cancel Order</Text>
         </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>

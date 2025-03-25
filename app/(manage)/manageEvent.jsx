@@ -30,18 +30,18 @@ const ManageEvent = () => {
     }
   }, [data]);
 
-  const handleDelete = async () => {
-    if (data.length > 0) {
-      Alert.alert("you have already sold tickets for this event");
-      return;
-    }
-    try {
-      await DeleteEvent(id);
-      router.replace("profile");
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const handleDelete = async () => {
+  //   if (data.length > 0) {
+  //     Alert.alert("you have already sold tickets for this event");
+  //     return;
+  //   }
+  //   try {
+  //     await DeleteEvent(id);
+  //     router.replace("profile");
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   return (
     <SafeAreaView className="h-screen">
@@ -55,9 +55,6 @@ const ManageEvent = () => {
               <Text className="text-xl">{title}</Text>
             </View>
           </View>
-          <TouchableOpacity onPress={handleDelete}>
-            <Ionicons name="trash-bin-outline" size={24} />
-          </TouchableOpacity>
         </View>
         <View className="bg-lime-400 p-4 rounded-lg ">
           <Text className="px-2 py-3 bg-white self-start rounded-lg">

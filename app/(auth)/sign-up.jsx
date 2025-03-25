@@ -6,6 +6,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Image,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import FormComponent from "../../components/FormComponent";
@@ -14,6 +15,7 @@ import DropDown from "../../components/DropDown";
 import { useGlobalContext } from "../../context/GlobalProvider";
 import { createUser } from "../../lib/appwrite";
 import { Link, router } from "expo-router";
+import Logo from "../../assets/logo-1.png";
 const SignUp = () => {
   const [signupData, setSignupData] = useState({
     email: "",
@@ -43,12 +45,16 @@ const SignUp = () => {
   };
 
   return (
-    <SafeAreaView className="h-full bg-stone-300">
+    <SafeAreaView className="h-full ">
       <ScrollView contentContainerStyle={{ height: "100%" }}>
         <View className="items-center justify-center size-full px-4">
-          <Text className="text-3xl font-bold capitalize text-black self-start flex-none text-center mb-10">
-            sign up
-          </Text>
+          <View className="w-full  items-center justify-center">
+            <Image source={Logo} className="size-[100px] rounded-full" />
+            <Text className="text-3xl font-bold capitalize text-black self-start flex-none text-center w-full mb-10">
+              sign up
+            </Text>
+          </View>
+
           <View className="w-full gap-3">
             <FormComponent
               handleChange={(e) =>

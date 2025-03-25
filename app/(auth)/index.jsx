@@ -6,7 +6,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import CustomBtn from "../../components/CustomBtn";
 import { getCurrentUser, signIn } from "../../lib/appwrite";
 import { useGlobalContext } from "../../context/GlobalProvider";
-
+import Logo from "../../assets/logo-1.png";
 const index = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { setUser, setIsLoggedIn, isLoggedIn, isLoading } = useGlobalContext();
@@ -45,15 +45,13 @@ const index = () => {
   if (!isLoading && isLoggedIn) return <Redirect href={"/home"} />;
 
   return (
-    <SafeAreaView className=" h-full bg-stone-300">
+    <SafeAreaView className=" h-full bg-white-300">
       <ScrollView contentContainerStyle={{ height: "100%" }}>
         <View className="items-center justify-center size-full  px-5 relative">
-          <View className="items-start w-full mb-10">
-            <Text className="text-sm font-light capitalize text-black self-start flex-none text-center">
+          <View className="w-full  items-center justify-center">
+            <Image source={Logo} className="size-[150px] rounded-full" />
+            <Text className="text-xl w-full mt-3 mb-5 font-bold capitalize text-black self-start flex-none text-center">
               sign in to
-            </Text>
-            <Text className="text-3xl font-bold capitalize text-black self-start flex-none text-center">
-              Evently
             </Text>
           </View>
           <View className="w-full gap-3">

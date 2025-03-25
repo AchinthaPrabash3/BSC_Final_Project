@@ -1,6 +1,14 @@
 import { Calendar, toDateId } from "@marceloterreiro/flash-calendar";
 import React, { useEffect, useState } from "react";
-import { Alert, Platform, StyleSheet, View } from "react-native";
+import {
+  Alert,
+  Platform,
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  Text,
+} from "react-native";
+import { Ionicons } from "@expo/vector-icons"; // For arrow icons
 import useAppwrite from "../hooks/useAppwrite";
 import { getBookedDates } from "../lib/appwrite";
 
@@ -14,12 +22,27 @@ const CalendarComp = ({
 }) => {
   const { data } = useAppwrite(getBookedDates(gigId));
   const [dates, setDates] = useState([]);
+  const [currentMonth, setCurrentMonth] = useState(toDateId(new Date(today))); // Track the current month
 
   useEffect(() => {
     if (data) {
       setDates(data.map((item) => toDateId(new Date(item.date))));
     }
   }, [data]);
+
+  // Function to navigate to the previous month
+  const goToPreviousMonth = () => {
+    const date = new Date(currentMonth);
+    date.setMonth(date.getMonth() - 1); // Move to the previous month
+    setCurrentMonth(toDateId(date));
+  };
+
+  // Function to navigate to the next month
+  const goToNextMonth = () => {
+    const date = new Date(currentMonth);
+    date.setMonth(date.getMonth() + 1); // Move to the next month
+    setCurrentMonth(toDateId(date));
+  };
 
   const handleDateSelect = (e) => {
     if (dates.includes(e)) {
@@ -33,10 +56,22 @@ const CalendarComp = ({
   return (
     <View className="mb-4">
       <View style={styles.calendarContainer}>
+        {/* Buttons for navigating months */}
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity
+            onPress={goToPreviousMonth}
+            style={styles.arrowButton}
+          >
+            <Ionicons name="chevron-back" size={30} color="#000" />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={goToNextMonth} style={styles.arrowButton}>
+            <Ionicons name="chevron-forward" size={30} color="#000" />
+          </TouchableOpacity>
+        </View>
         <Calendar
           calendarMinDateId={today}
           calendarDisabledDateIds={dates}
-          calendarMonthId={today}
+          calendarMonthId={currentMonth} // Use the state to control the current month
           onCalendarDayPress={handleDateSelect}
           calendarActiveDateRanges={[
             {
@@ -81,6 +116,16 @@ const styles = StyleSheet.create({
   calendar: {
     borderRadius: 10,
     overflow: "hidden",
+  },
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 10,
+  },
+  arrowButton: {
+    padding: 10,
+    backgroundColor: "#f0f0f0",
+    borderRadius: 5,
   },
 });
 

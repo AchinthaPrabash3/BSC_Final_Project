@@ -23,7 +23,7 @@ const Layout = () => {
   const tabBarData = [
     { name: "home", icon: "home", path: "home" },
     { name: "events", icon: "calendar", path: "events" },
-    { name: "messages", icon: "message1", path: "messages" },
+    //  { name: "messages", icon: "message1", path: "messages" },
     // { name: "cart", icon: "shoppingcart", path: "cart" },
     { name: "profile", icon: "user", path: "profile" },
   ];

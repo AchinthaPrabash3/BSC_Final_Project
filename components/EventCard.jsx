@@ -35,7 +35,7 @@ const EventCard = ({
 
   return (
     <TouchableOpacity
-      // disabled={new Date() > new Date(date)}
+      disabled={new Date() > new Date(date)}
       onPress={() =>
         router.push({
           pathname: "events_page/[id]",
@@ -54,32 +54,34 @@ const EventCard = ({
       }
       className="bg-white p-3 rounded-xl"
     >
+      <View className="flex-row justify-between w-full">
+        <Text className="text-3xl capitalize font-bold">{eventname}</Text>
+      </View>
       <Image
         source={{ uri: banner }}
-        className="w-full h-[500px] rounded-lg"
-        resizeMode="cover"
+        className="w-full h-[300px] rounded-lg"
+        resizeMode="center"
       />
       <View className="flex-row items-center justify-between mt-4">
         <View>
-          <View className="flex-row justify-between w-full">
-            <Text className="text-3xl capitalize font-bold leading-none">
-              {eventname}
-            </Text>
-          </View>
           <View className="flex-row w-full justify-between">
             <View className="gap-2 w-full">
-              <Text className="capitalize leading-tight ">
-                at{" "}
-                <Text className="font-bold text-lg leading-none">
-                  {location}
+              <View className="flex-row gap-2 items-center justify-between">
+                <Text className="capitalize  font-bold text-xl ">
+                  📅 {showDate}
                 </Text>
-              </Text>
-              <Text className=" leading-none">
-                <Text className="font-bold text-lg  leading-none">
-                  {showDate}{" "}
-                  <Text className=" capitalize font-normal">from</Text>{" "}
-                  {showTime}
+                <Text
+                  className={`${
+                    new Date() > new Date(date)
+                      ? "text-red-400"
+                      : "text-lime-400"
+                  } font-semibold text-xl`}
+                >
+                  {new Date() > new Date(date) ? "Ended" : "upcoming"}
                 </Text>
+              </View>
+              <Text className=" leading font-bold text-xl">
+                📍 {location} | 🕒 {showTime}
               </Text>
             </View>
           </View>

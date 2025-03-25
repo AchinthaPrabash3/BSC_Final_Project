@@ -21,7 +21,7 @@ const EventID = () => {
   const [showDate, setShowDate] = useState("");
   const [showTime, setShowTime] = useState("");
 
-  const { data, reFeatch } = useAppwrite(getTicketInfo($id));
+  const { data, reFeatch, isLoading } = useAppwrite(getTicketInfo($id));
   const {
     eventname,
     date,
@@ -112,76 +112,85 @@ const EventID = () => {
 
   return (
     <SafeAreaView className="h-screen bg-gray-100 p-4">
-      <ScrollView
-        contentContainerStyle={{ paddingBottom: 5, flexGrow: 1 }}
-        showsVerticalScrollIndicator={false}
-      >
-        <View className="flex-row items-center gap-4 mb-4">
-          <TouchableOpacity onPress={() => router.back()}>
-            <Ionicons name="chevron-back-outline" size={32} />
-          </TouchableOpacity>
-          <Text className="text-2xl font-bold flex-1 text-center capitalize">
-            {eventname}
-          </Text>
-        </View>
-        <View className="rounded-lg overflow-hidden shadow-md">
-          <Image
-            source={{ uri: banner }}
-            className="w-full h-[500px]"
-            resizeMode="cover"
-          />
-        </View>
-        <View className="mt-4 p-4 bg-white rounded-lg shadow">
-          <Text className="text-lg font-semibold">📅 {showDate}</Text>
-          <Text className="text-lg font-semibold">
-            📍 {location} | 🕒 {showTime}
-          </Text>
-        </View>
-        <View className="mt-4 gap-3">
-          {prices?.map((price, i) => (
-            <View
-              key={i}
-              className={`flex-row items-center justify-between p-4 rounded-lg shadow ${
-                selected == i ? "bg-lime-400" : "bg-white"
-              }`}
-            >
-              <View className="flex-row gap-4 items-center">
-                <Text className="capitalize font-bold text-lg">
-                  {price_titles[i]}
-                </Text>
-                <Text className="text-lg">{price}.Rs</Text>
-              </View>
-              <View className="flex-row items-center gap-4">
-                <Text className="text-lg font-medium">🎟 {ticket_count[i]}</Text>
-                <TouchableOpacity
-                  className={`px-6 py-2 rounded-lg shadow ${
-                    selected === i ? "bg-white" : "bg-lime-400"
-                  }`}
-                  onPress={() => {
-                    setSelected(i);
-                    setTicketInfo({
-                      ...ticketInfo,
-                      ticketIndex: i,
-                      price: price,
-                    });
-                  }}
-                >
-                  <Text className="text-lg font-medium capitalize">Select</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          ))}
-        </View>
-        <TouchableOpacity
-          className="h-16 items-center justify-center mt-6 bg-lime-500 rounded-lg shadow"
-          disabled={buying}
-          onPress={handleBuyTicketPress} // Use the new confirmation handler
+      {isLoading ? (
+        <View>loading</View>
+      ) : (
+        <ScrollView
+          contentContainerStyle={{ paddingBottom: 5, flexGrow: 1 }}
+          showsVerticalScrollIndicator={false}
         >
-          <Text className="text-xl font-bold capitalize text-black">
-            Buy Ticket
-          </Text>
-        </TouchableOpacity>
-      </ScrollView>
+          <View className="flex-row items-center gap-4 mb-4">
+            <TouchableOpacity onPress={() => router.back()}>
+              <Ionicons name="chevron-back-outline" size={32} />
+            </TouchableOpacity>
+            <Text className="text-2xl font-bold flex-1 text-center capitalize">
+              {eventname}
+            </Text>
+          </View>
+          <View className="rounded-lg overflow-hidden shadow-md">
+            <Image
+              source={{ uri: banner }}
+              className="w-full h-[500px]"
+              resizeMode="cover"
+            />
+          </View>
+          <View className="mt-4 p-4 bg-white rounded-lg shadow">
+            <Text className="text-lg font-semibold">📅 {showDate}</Text>
+            <Text className="text-lg font-semibold">
+              📍 {location} | 🕒 {showTime}
+            </Text>
+          </View>
+          <Text className="text-justify py-3 leading-normal">{event_desc}</Text>
+          <View className="mt-4 gap-3">
+            {prices?.map((price, i) => (
+              <View
+                key={i}
+                className={`flex-row items-center justify-between p-4 rounded-lg shadow ${
+                  selected == i ? "bg-lime-400" : "bg-white"
+                }`}
+              >
+                <View className="flex-row gap-4 items-center">
+                  <Text className="capitalize font-bold text-lg">
+                    {price_titles[i]}
+                  </Text>
+                  <Text className="text-lg">{price}.Rs</Text>
+                </View>
+                <View className="flex-row items-center gap-4">
+                  <Text className="text-lg font-medium">
+                    🎟 {ticket_count[i]}
+                  </Text>
+                  <TouchableOpacity
+                    className={`px-6 py-2 rounded-lg shadow ${
+                      selected === i ? "bg-white" : "bg-lime-400"
+                    }`}
+                    onPress={() => {
+                      setSelected(i);
+                      setTicketInfo({
+                        ...ticketInfo,
+                        ticketIndex: i,
+                        price: price,
+                      });
+                    }}
+                  >
+                    <Text className="text-lg font-medium capitalize">
+                      Select
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            ))}
+          </View>
+          <TouchableOpacity
+            className="h-16 items-center justify-center mt-6 bg-lime-500 rounded-lg shadow"
+            disabled={buying}
+            onPress={handleBuyTicketPress} // Use the new confirmation handler
+          >
+            <Text className="text-xl font-bold capitalize text-black">
+              Buy Ticket
+            </Text>
+          </TouchableOpacity>
+        </ScrollView>
+      )}
     </SafeAreaView>
   );
 };

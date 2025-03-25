@@ -17,24 +17,34 @@ const Id = () => {
   const { id } = useLocalSearchParams();
   const { data } = useAppwrite(getUserInfo(id));
   const { data: UserGigs } = useAppwrite(getUserPosts(id));
-  const { username, avatar } = data;
+  const { username, avatar, bio } = data;
 
   return (
-    <SafeAreaView>
+    <SafeAreaView className="p-1">
       <ScrollView>
         <TouchableOpacity onPress={() => router.back()}>
-          <Ionicons name="chevron-back-outline" size={24} />
+          <Ionicons name="chevron-back-outline" size={32} />
         </TouchableOpacity>
         <View className="p-3">
-          <View className="items-center justify-center pt-3">
-            <Image
-              source={{ uri: avatar }}
-              className="size-24 rounded-full"
-              resizeMode="contain"
-            />
-            <Text className="pt-3">{username}</Text>
+          <View className="items-center justify-center pt-3 mb-4 border-b pb-3 border-lime-400">
+            <View
+              style={{
+                shadowColor: "black",
+                shadowOffset: { width: 0, height: 2 },
+                shadowOpacity: 0.5,
+                shadowRadius: 2,
+              }}
+            >
+              <Image
+                source={{ uri: avatar }}
+                className="size-28 rounded-full"
+                resizeMode="contain"
+              />
+            </View>
+            <Text className="pt-1 text-lg font-bold">{username}</Text>
+            <Text className="w-[250px] text-center text-sm mt-2">{bio}</Text>
           </View>
-          <View>
+          <View className="-mt-3">
             {UserGigs.map((data, i) => (
               <ProductCard {...data} key={i} />
             ))}

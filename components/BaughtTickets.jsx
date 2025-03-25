@@ -30,8 +30,19 @@ const BaughtTickets = ({ eventId, price }) => {
       </Text>
 
       {/* Price */}
-      <View className="mt-3 bg-lime-500 px-4 py-2 rounded-lg self-start">
-        <Text className="text-white font-semibold text-lg">{price} Rs</Text>
+      <View className="mt-3 flex-row items-center justify-between">
+        <Text className="text-white font-semibold text-lg  bg-lime-500 px-4 py-2 rounded-lg self-start">
+          {price} Rs
+        </Text>
+        {new Date() > new Date(date) ? (
+          ""
+        ) : (
+          <TouchableOpacity className="py-2 px-4 self-end bg-red-600 rounded-lg">
+            <Text className="text-xl font-bold capitalize text-white">
+              cancel
+            </Text>
+          </TouchableOpacity>
+        )}
       </View>
     </View>
   );

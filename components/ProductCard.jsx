@@ -12,6 +12,7 @@ const ProductCard = ({
   prices,
   price_desc,
   price_titles,
+  gig_type,
   creator: { avatar, username, user_rating, $id: creatorId },
 }) => {
   const passData = () =>
@@ -35,7 +36,7 @@ const ProductCard = ({
 
   return (
     <View
-      className="mt-[17px] items-start justify-center gap-3 bg-white p-2 py-5 rounded-xl"
+      className="mt-[17px] items-start justify-center gap-3 bg-white p-2 py-5 rounded-xl border border-slate-200"
       style={{
         shadowColor: "black",
         shadowOffset: { width: 0, height: 2 },
@@ -59,9 +60,6 @@ const ProductCard = ({
           </TouchableOpacity>
           <Text className=" capitalize">{username}</Text>
         </View>
-        <TouchableOpacity>
-          <Entypo name="dots-three-vertical" size={24} />
-        </TouchableOpacity>
       </View>
       <View className="w-full h-[230px]">
         <TouchableOpacity
@@ -78,22 +76,38 @@ const ProductCard = ({
       </View>
       <View className="flex-1 w-full">
         <View className="">
+          <View className="flex-row-reverse justify-between">
+            <Text className="items-end text-sm mb-2" numberOfLines={2}>
+              {prices.length > 1 ? "Starting from" : "price"}{" "}
+              <Text className="font-bold text-lg">{prices[0]}.Rs</Text>
+            </Text>
+            <View className="flex-row gap-[0.5px]">
+              {[...Array(5)].map((_, index) => (
+                <AntDesign
+                  size={16}
+                  key={index}
+                  name="star"
+                  color={index < Math.round(rating) ? "#FAD5A5" : "#808080"}
+                />
+              ))}
+            </View>
+          </View>
+
           <TouchableOpacity onPress={passData}>
-            <Text className="text-3xl">{title}</Text>
+            <Text className="text-2xl font-bold leading-none" numberOfLines={2}>
+              {title}
+            </Text>
           </TouchableOpacity>
-          <View className="flex-row gap-0.5">
-            {[...Array(5)].map((_, index) => (
-              <AntDesign
-                size={16}
-                key={index}
-                name="star"
-                color={index < Math.round(rating) ? "#FAD5A5" : "#808080"}
-              />
+          <View className="flex-row gap-1 mt-2 flex-wrap">
+            {gig_type?.map((data, i) => (
+              <Text
+                key={i}
+                className="text-slate-500 bg-slate-200 px-1 py-1 rounded-md text-sm"
+              >
+                {data}
+              </Text>
             ))}
           </View>
-          <Text className="text-lg mt-2">
-            {prices.length > 1 ? "Starting from" : "price"} {prices[0]}.Rs
-          </Text>
         </View>
       </View>
     </View>
