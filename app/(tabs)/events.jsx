@@ -26,7 +26,7 @@ const Events = () => {
       <FlatList
         showsVerticalScrollIndicator={false}
         className="h-full"
-        contentContainerStyle={{ paddingBottom: 100 }}
+        contentContainerStyle={{ paddingBottom: 100, gap: 20 }}
         data={data}
         keyExtractor={(item) => item.$id}
         ListHeaderComponent={() => (

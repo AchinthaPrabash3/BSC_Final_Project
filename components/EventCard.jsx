@@ -15,23 +15,26 @@ const EventCard = ({
 }) => {
   const [showDate, setShowDate] = useState("");
   const [showTime, setShowTime] = useState("");
-  const dates = new Date(date);
+
   useEffect(() => {
+    if (!date) return; // Prevent errors if date is undefined
+
+    const dates = new Date(date);
     const year = dates.getFullYear();
-    const month = dates.getMonth();
+    const month = dates.getMonth() + 1; // Months are 0-based
     const day = dates.getDate();
-    const hour = dates.getUTCHours();
+    const hour = dates.getHours(); // Use getHours() instead of getUTCHours()
     const amPm = hour >= 12 ? "PM" : "AM";
-    const formatedHour = (hour % 12 || 12).toString().padStart(2, "0");
-    const minutes = dates.getUTCMinutes().toString().padStart(2, "0");
+    const formattedHour = (hour % 12 || 12).toString().padStart(2, "0");
+    const minutes = dates.getMinutes().toString().padStart(2, "0");
+
     setShowDate(
-      `${year}-${(month + 1).toString().padStart(2, "0")}-${day
+      `${year}-${month.toString().padStart(2, "0")}-${day
         .toString()
         .padStart(2, "0")}`
     );
-
-    setShowTime(`${formatedHour}:${minutes} ${amPm}`);
-  }, []);
+    setShowTime(`${formattedHour}:${minutes} ${amPm}`);
+  }, [date]);
 
   return (
     <TouchableOpacity
