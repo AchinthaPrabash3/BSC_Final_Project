@@ -261,9 +261,9 @@ const CreateGig = () => {
         {/* Pricing Tiers */}
         <Text>pricing tiers</Text>
         <View className="w-full h-[300px] border border-dashed rounded my-4 p-2">
-          <ScrollView horizontal contentContainerStyle={{ flexGrow: 1 }}>
+          <ScrollView horizontal={true} contentContainerStyle={{ flexGrow: 1 }}>
             {gigData.prices.length > 0 ? (
-              <View>
+              <View className="flex-row">
                 {gigData.prices.map((item, i) => (
                   <TouchableOpacity
                     key={i}
@@ -283,7 +283,7 @@ const CreateGig = () => {
                       <Text className="text-center font-bold text-2xl my-3 ">
                         {item}.Rs
                       </Text>
-                      <Text className="text-justify font-light leading-normal">
+                      <Text className="text-center font-light leading-normal text-sm">
                         {gigData.price_desc[i]}
                       </Text>
                     </View>
@@ -319,6 +319,7 @@ const CreateGig = () => {
             containerStyles={"mt-5"}
             max_lenth={80}
             inputStyles={"h-16"}
+            keyboardType="decimal-pad"
           />
           <CreateFormInput
             handleChange={(e) =>

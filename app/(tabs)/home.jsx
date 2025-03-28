@@ -98,8 +98,10 @@ const Home = () => {
         renderItem={({ item }) => <ProductCard {...item} key={item.id} />}
         contentContainerStyle={{ paddingBottom: 100 }}
         ListEmptyComponent={
-          <View>
-            <Text>No Gigs Found</Text>
+          <View className="h-screen items-center justify-center">
+            <Text className="text-xl capitalize font-bold text-slate-400">
+              No Gigs Found
+            </Text>
           </View>
         }
         ListHeaderComponent={() => (

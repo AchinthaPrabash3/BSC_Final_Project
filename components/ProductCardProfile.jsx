@@ -35,7 +35,7 @@ const ProductCardProfile = ({
   return (
     <TouchableOpacity
       activeOpacity={1}
-      className="p-2 w-full bg-lime-200 h-[140px] flex-row gap-4 items-center rounded-2xl overflow-hidden"
+      className="p-2 w-full bg-lime-200 h-[160px] flex-row gap-4 items-center rounded-2xl overflow-hidden"
     >
       <Image
         source={{ uri: content }}
@@ -44,7 +44,7 @@ const ProductCardProfile = ({
       />
       <View className="flex-1 h-full justify-between">
         <View>
-          <Text numberOfLines={2} className="text-2xl font-bold leading-none">
+          <Text numberOfLines={2} className="text-2xl font-bold">
             {title}
           </Text>
           <Text numberOfLines={3} className="text-xs mt-1">

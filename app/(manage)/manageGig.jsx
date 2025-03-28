@@ -1,8 +1,9 @@
 import { router, useLocalSearchParams } from "expo-router";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Alert,
   Image,
+  RefreshControl,
   ScrollView,
   StyleSheet,
   Text,
@@ -22,11 +23,36 @@ import GigStats from "../../components/GigStats";
 const ManageGig = () => {
   const { id, title, description, image, rating, activeOrders } =
     useLocalSearchParams();
-  const { data } = useAppwrite(getOrders(id));
+  const { data, reFeatch } = useAppwrite(getOrders(id));
   const [isDeleteing, setIsDeleting] = useState(false);
+  const [orders, setOrders] = useState(0);
+  const [isRefresing, setIsRefresing] = useState(false);
+
+  const onRefresh = async () => {
+    setIsRefresing(true);
+    try {
+      await reFeatch();
+      setIsRefresing(false);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    setOrders(0);
+
+    const totalOrders = data.reduce((acc, item) => {
+      if (item.canceled == false && item.completed == false) {
+        return acc + 1;
+      }
+      return acc;
+    }, 0);
+
+    setOrders(totalOrders);
+  }, [data]);
 
   const deletingGig = async () => {
-    if (activeOrders > 0) {
+    if (orders > 0) {
       Alert.alert("complete all the orders or cancel the orders");
       return;
     }
@@ -50,6 +76,7 @@ const ManageGig = () => {
               console.error(error);
             } finally {
               setIsDeleting(false);
+              router.back();
             }
           },
         },
@@ -60,7 +87,12 @@ const ManageGig = () => {
 
   return (
     <SafeAreaView className="h-screen">
-      <ScrollView contentContainerStyle={{ flexGrow: 1, padding: 10 }}>
+      <ScrollView
+        contentContainerStyle={{ flexGrow: 1, padding: 10 }}
+        refreshControl={
+          <RefreshControl onRefresh={onRefresh} refreshing={isRefresing} />
+        }
+      >
         <View className="flex-row items-center justify-between  py-3 gap-3">
           <View className="flex-row items-center gap-3">
             <TouchableOpacity onPress={() => router.back()}>
@@ -85,7 +117,7 @@ const ManageGig = () => {
           </TouchableOpacity>
         </View>
         <View className="mb-5">
-          <GigStats activeOrders={activeOrders} id={id} />
+          <GigStats activeOrders={orders} id={id} />
         </View>
         <Image
           source={{ uri: image }}

@@ -318,7 +318,7 @@ const CreateEvent = () => {
                   setPricings({ ...pricings, pricing: Number(e) })
                 }
                 inputStyles={"h-16"}
-                keyboardType="numeric"
+                keyboardType="decimal-pad"
               />
               <CreateFormInput
                 max_lenth={80}
@@ -329,7 +329,7 @@ const CreateEvent = () => {
                   setPricings({ ...pricings, ticket_count: e })
                 }
                 inputStyles={"h-16"}
-                keyboardType="numeric"
+                keyboardType="decimal-pad"
               />
               <CustomBtn
                 handlePress={handleSavingPrice}

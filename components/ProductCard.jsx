@@ -77,10 +77,14 @@ const ProductCard = ({
       <View className="flex-1 w-full">
         <View className="">
           <View className="flex-row-reverse justify-between">
-            <Text className="items-end text-sm mb-2" numberOfLines={2}>
-              {prices.length > 1 ? "Starting from" : "price"}{" "}
-              <Text className="font-bold text-lg">{prices[0]}.Rs</Text>
-            </Text>
+            <View className="flex-row items-end gap-1">
+              <Text className="items-end text-sm" numberOfLines={2}>
+                {prices.length > 1 ? "Starting from" : "price"}{" "}
+              </Text>
+              <Text className="font-bold text-lg leading-none">
+                {prices[0]}.Rs
+              </Text>
+            </View>
             <View className="flex-row gap-[0.5px]">
               {[...Array(5)].map((_, index) => (
                 <AntDesign
@@ -94,7 +98,7 @@ const ProductCard = ({
           </View>
 
           <TouchableOpacity onPress={passData}>
-            <Text className="text-2xl font-bold leading-none" numberOfLines={2}>
+            <Text className="text-2xl font-bold" numberOfLines={2}>
               {title}
             </Text>
           </TouchableOpacity>
