@@ -45,7 +45,7 @@ const index = () => {
   if (!isLoading && isLoggedIn) return <Redirect href={"/home"} />;
 
   return (
-    <SafeAreaView className=" h-full bg-white-300">
+    <SafeAreaView className=" h-full bg-gray-200">
       <ScrollView contentContainerStyle={{ height: "100%" }}>
         <View className="items-center justify-center size-full  px-5 relative">
           <View className="w-full  items-center justify-center">

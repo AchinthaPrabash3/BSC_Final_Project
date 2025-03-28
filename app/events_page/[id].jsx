@@ -88,6 +88,7 @@ const EventID = () => {
       console.error(error);
     } finally {
       setBuying(false);
+      router.back();
     }
   };
 
@@ -113,7 +114,13 @@ const EventID = () => {
   return (
     <SafeAreaView className="h-screen bg-gray-100 p-4">
       {isLoading ? (
-        <View>loading</View>
+        <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+          <View className="size-full items-center justify-center">
+            <Text className="text-3xl text-slate-400 font-bold">
+              Loading Data
+            </Text>
+          </View>
+        </ScrollView>
       ) : (
         <ScrollView
           contentContainerStyle={{ paddingBottom: 5, flexGrow: 1 }}

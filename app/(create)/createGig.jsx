@@ -142,17 +142,38 @@ const CreateGig = () => {
       !gigData.price_titles.length ||
       !gigData.title
     ) {
-      Alert.alert("please fill out all the fomrs");
+      Alert.alert(
+        "Error",
+        "Please Enter all the nessary data to create this gig"
+      );
       return;
     }
 
-    setIsSubmitting(true);
-    try {
-      await createGig({ ...gigData });
-    } catch (error) {
-    } finally {
-      setIsSubmitting(false);
-    }
+    Alert.alert(
+      "Create Gig",
+      "creating gig",
+      [
+        {
+          text: "Cancel", // First button (Cancel)
+          onPress: () => console.log("Purchase canceled"), // Action on cancel
+          style: "cancel", // Style for cancel button
+        },
+        {
+          text: "OK", // Second button (OK)
+          onPress: async () => {
+            setIsSubmitting(true);
+            try {
+              await createGig({ ...gigData });
+            } catch (error) {
+            } finally {
+              setIsSubmitting(false);
+              router.back();
+            }
+          }, // Action on OK (call handleBuying)
+        },
+      ],
+      { cancelable: false }
+    );
   };
 
   return (
@@ -183,6 +204,7 @@ const CreateGig = () => {
           inputStyles={"h-16"}
         />
         <CreateFormInput
+          title={"Contact Number"}
           handleChange={(e) =>
             setGigData((prev) => ({ ...prev, contactNum: e }))
           }

@@ -154,14 +154,30 @@ const CreateEvent = () => {
       return;
     }
 
-    setSubmitting(true);
-    try {
-      await createEvent({ ...eventData });
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setSubmitting(false);
-    }
+    Alert.alert(
+      "Create a Event",
+      "By clicking ok you will be publishing your gig and you want be able to change the ticket info",
+      [
+        { text: "Cancel", style: "cancel" },
+        {
+          text: "Ok",
+          onPress: async () => {
+            setSubmitting(true);
+            try {
+              await createEvent({ ...eventData });
+            } catch (error) {
+              console.log(error);
+            } finally {
+              setSubmitting(false);
+              router.back();
+            }
+          },
+        },
+      ],
+      {
+        cancelable: true,
+      }
+    );
   };
 
   return (

@@ -45,7 +45,7 @@ const SignUp = () => {
   };
 
   return (
-    <SafeAreaView className="h-full ">
+    <SafeAreaView className="h-full bg-gray-200">
       <ScrollView contentContainerStyle={{ height: "100%" }}>
         <View className="items-center justify-center size-full px-4">
           <View className="w-full  items-center justify-center">

@@ -99,7 +99,7 @@ const ProductPage = () => {
     <SafeAreaView className="h-screen">
       {select !== null ? (
         <View
-          className=" bg-white rounded-xl mb-4 p-3 flex-row justify-between"
+          className=" bg-white rounded-xl mb-4 p-3 flex-row justify-between h-14 items-center"
           style={{
             shadowColor: "#171717",
             shadowOffset: { width: -2, height: 4 },
@@ -107,8 +107,16 @@ const ProductPage = () => {
             shadowRadius: 3,
           }}
         >
-          <Text>Total : {order.price}.Rs</Text>
-          <Text>On : {order.date || "Select date"}</Text>
+          <Text className="text-xl">
+            Total :{" "}
+            <Text className="font-bold">
+              {order.price || "select pakage"}.Rs
+            </Text>{" "}
+          </Text>
+          <Text className="text-xl">
+            On :{" "}
+            <Text className="font-bold">{order.date || "Select date"}</Text>{" "}
+          </Text>
         </View>
       ) : (
         ""

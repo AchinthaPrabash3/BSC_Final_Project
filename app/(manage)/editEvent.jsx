@@ -117,14 +117,30 @@ const EditEvent = () => {
       return;
     }
 
-    setSubmitting(true);
-    try {
-      await updateEvent({ ...eventData });
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setSubmitting(false);
-    }
+    Alert.alert(
+      "Update Event",
+      "By clicking ok you will be making the changes permenent",
+      [
+        { text: "Cancel", style: "cancel" },
+        {
+          text: "Ok",
+          onPress: async () => {
+            setSubmitting(true);
+            try {
+              await updateEvent({ ...eventData });
+            } catch (error) {
+              console.log(error);
+            } finally {
+              setSubmitting(false);
+              router.back();
+            }
+          },
+        },
+      ],
+      {
+        cancelable: true,
+      }
+    );
   };
 
   return (

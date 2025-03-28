@@ -11,7 +11,11 @@ import {
   Alert,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { completeOrder, getBookingInfo } from "../../lib/appwrite";
+import {
+  cancelGigOrders,
+  completeOrder,
+  getBookingInfo,
+} from "../../lib/appwrite";
 import useAppwrite from "../../hooks/useAppwrite";
 
 const Order = () => {
@@ -22,18 +26,21 @@ const Order = () => {
   const completeOrders = async () => {
     try {
       await completeOrder($id);
-      alert("Order completed successfully!");
+      Alert.alert("Order completed successfully!");
       router.back();
     } catch (error) {
       console.error(error);
-      alert("Failed to complete order. Please try again.");
+      Alert.alert("Failed to complete order. Please try again.");
     }
   };
 
-  const cancelOrder = () => {
-    console.log(`Order ${$id} has been canceled.`);
-    alert("Order has been canceled.");
-    router.back();
+  const handleCancelOrder = async () => {
+    try {
+      await cancelGigOrders($id);
+      router.back();
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -110,7 +117,7 @@ const Order = () => {
               "Are you sure you want to cancel this order?",
               [
                 { text: "No", style: "cancel" },
-                { text: "Yes", onPress: cancelOrder },
+                { text: "Yes", onPress: handleCancelOrder },
               ],
               { cancelable: true }
             )

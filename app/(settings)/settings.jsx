@@ -56,15 +56,28 @@ const Settings = () => {
       Alert.alert("please entera bio to update");
       return;
     }
-    setUpdateing(true);
-    try {
-      await addOrUpdateBio(id, bioText);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setUpdateing(false);
-      router.back();
-    }
+    Alert.alert(
+      "Cancel Order",
+      "Are you sure you want to cancel this order?",
+      [
+        { text: "No", style: "cancel" },
+        {
+          text: "Yes",
+          onPress: async () => {
+            setUpdateing(true);
+            try {
+              await addOrUpdateBio(id, bioText);
+            } catch (error) {
+              console.error(error);
+            } finally {
+              setUpdateing(false);
+              router.back();
+            }
+          },
+        },
+      ],
+      { cancelable: true }
+    );
   };
 
   const updateProfilePics = async () => {
@@ -72,15 +85,28 @@ const Settings = () => {
       Alert.alert("please select a image to update");
       return;
     }
+    Alert.alert(
+      "Cancel Order",
+      "Are you sure you want to cancel this order?",
+      [
+        { text: "No", style: "cancel" },
+        {
+          text: "Yes",
+          onPress: async () => {
+            try {
+              await updateProfilePic(id, profilePic);
+            } catch (error) {
+              console.error(error);
+            } finally {
+              setUpdateing(false);
+              router.back();
+            }
+          },
+        },
+      ],
+      { cancelable: true }
+    );
     setUpdateing(true);
-    try {
-      await updateProfilePic(id, profilePic);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setUpdateing(false);
-      router.back();
-    }
   };
 
   const handleUpdateUsername = async () => {
@@ -88,16 +114,28 @@ const Settings = () => {
       Alert.alert("please entera user name to update");
       return;
     }
-
-    setUpdateing(true);
-    try {
-      updateUsername(id, username);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setUpdateing(false);
-      router.back();
-    }
+    Alert.alert(
+      "Cancel Order",
+      "Are you sure you want to cancel this order?",
+      [
+        { text: "No", style: "cancel" },
+        {
+          text: "Yes",
+          onPress: async () => {
+            setUpdateing(true);
+            try {
+              updateUsername(id, username);
+            } catch (error) {
+              console.error(error);
+            } finally {
+              setUpdateing(false);
+              router.back();
+            }
+          },
+        },
+      ],
+      { cancelable: true }
+    );
   };
 
   return (
@@ -163,8 +201,9 @@ const Settings = () => {
                   />
                 </View>
               ) : (
-                <View className="size-[200px] bg-lime-400">
+                <View className="size-[200px] bg-lime-400 items-center justify-center flex-col-reverse rounded-lg">
                   <Text>Select a Image</Text>
+                  <Ionicons name="image" size={24} />
                 </View>
               )}
             </TouchableOpacity>

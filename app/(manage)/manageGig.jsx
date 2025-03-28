@@ -31,15 +31,31 @@ const ManageGig = () => {
       return;
     }
 
-    setIsDeleting(true);
-    try {
-      await deleteGig(id);
-      router.replace("profile");
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setIsDeleting(false);
-    }
+    Alert.alert(
+      "Delete Gig",
+      "by this you will be deleting the gig and no loger will be able to reseve orders",
+      [
+        {
+          text: "cancel",
+          style: "cancel",
+        },
+        {
+          text: "ok",
+          onPress: async () => {
+            setIsDeleting(true);
+            try {
+              await deleteGig(id);
+              router.replace("profile");
+            } catch (error) {
+              console.error(error);
+            } finally {
+              setIsDeleting(false);
+            }
+          },
+        },
+      ],
+      { cancelable: true }
+    );
   };
 
   return (

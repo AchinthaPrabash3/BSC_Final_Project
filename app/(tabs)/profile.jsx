@@ -202,9 +202,16 @@ const Profile = () => {
                       {tickets?.map((ticket, i) => {
                         if (
                           ticket?.eventId?.eventname !== null &&
-                          !(new Date() > new Date(ticket?.eventId?.date))
+                          !(new Date() > new Date(ticket?.eventId?.date)) &&
+                          !ticket?.canceled
                         ) {
-                          return <BaughtTickets key={i} {...ticket} />;
+                          return (
+                            <BaughtTickets
+                              key={i}
+                              {...ticket}
+                              ticketId={ticket.$id}
+                            />
+                          );
                         }
                       })}
                     </View>

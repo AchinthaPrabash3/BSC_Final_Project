@@ -60,7 +60,7 @@ const EventCard = ({
       <Image
         source={{ uri: banner }}
         className="w-full h-[300px] rounded-lg"
-        resizeMode="center"
+        resizeMode="cover"
       />
       <View className="flex-row items-center justify-between mt-4">
         <View>

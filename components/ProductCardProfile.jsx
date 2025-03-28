@@ -35,11 +35,11 @@ const ProductCardProfile = ({
   return (
     <TouchableOpacity
       activeOpacity={1}
-      className="p-2 w-full bg-lime-200 h-[140px] flex-row gap-4 items-center rounded-lg"
+      className="p-2 w-full bg-lime-200 h-[140px] flex-row gap-4 items-center rounded-2xl overflow-hidden"
     >
       <Image
         source={{ uri: content }}
-        className="size-[110px] rounded-md"
+        className="size-[120px] rounded-xl"
         resizeMode="cover"
       />
       <View className="flex-1 h-full justify-between">

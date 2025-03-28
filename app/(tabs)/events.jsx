@@ -12,8 +12,13 @@ const Events = () => {
 
   const onRefresh = async () => {
     setIsRefressing(true);
-    await reFeatch();
-    setIsRefressing(false);
+    try {
+      await reFeatch();
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsRefressing(false);
+    }
   };
 
   return (
@@ -32,6 +37,11 @@ const Events = () => {
             <EventSearch />
           </View>
         )}
+        ListEmptyComponent={
+          <View className="h-screen items-center justify-center">
+            <Text className="text-2xl text-gray-300">Loading Data</Text>
+          </View>
+        }
         renderItem={({ item }) => <EventCard {...item} key={item.$id} />}
         refreshControl={
           <RefreshControl refreshing={isRefressing} onRefresh={onRefresh} />

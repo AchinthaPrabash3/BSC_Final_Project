@@ -163,13 +163,27 @@ const EditGig = () => {
       return;
     }
 
-    setIsSubmitting(true);
-    try {
-      await updateGig({ ...gigData });
-    } catch (error) {
-    } finally {
-      setIsSubmitting(false);
-    }
+    Alert.alert(
+      "Uodate Gig",
+      "By clicking Ok you will be making these changes to your Gig",
+      [
+        { text: "Cancel", style: "cancel" },
+        {
+          text: "Ok",
+          onPress: async () => {
+            setIsSubmitting(true);
+            try {
+              await updateGig({ ...gigData });
+            } catch (error) {
+            } finally {
+              setIsSubmitting(false);
+              router.back();
+            }
+          },
+        },
+      ],
+      { cancelable: true }
+    );
   };
 
   return (
@@ -196,6 +210,7 @@ const EditGig = () => {
             inputStyles={"h-16"}
           />
           <CreateFormInput
+            title={"Contact Number"}
             handleChange={(e) =>
               setGigData((prev) => ({ ...prev, contactNum: e }))
             }

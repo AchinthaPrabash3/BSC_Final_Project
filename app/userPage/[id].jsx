@@ -1,6 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import { router, useLocalSearchParams } from "expo-router";
-import React from "react";
+import React, { useState } from "react";
 import {
   ScrollView,
   StyleSheet,
@@ -8,6 +8,7 @@ import {
   View,
   TouchableOpacity,
   Image,
+  RefreshControl,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import useAppwrite from "../../hooks/useAppwrite";
@@ -15,13 +16,29 @@ import { getUserInfo, getUserPosts } from "../../lib/appwrite";
 import ProductCard from "../../components/ProductCard";
 const Id = () => {
   const { id } = useLocalSearchParams();
-  const { data } = useAppwrite(getUserInfo(id));
+  const { data, reFeatch } = useAppwrite(getUserInfo(id));
   const { data: UserGigs } = useAppwrite(getUserPosts(id));
   const { username, avatar, bio } = data;
+  const [refresing, setRefresing] = useState(false);
+  const refresh = async () => {
+    setRefresing(true);
+    try {
+      await reFeatch();
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setRefresing(false);
+    }
+  };
 
   return (
     <SafeAreaView className="p-1">
-      <ScrollView>
+      <ScrollView
+        contentContainerStyle={{ flexGrow: 1 }}
+        refreshControl={
+          <RefreshControl onRefresh={refresh} refreshing={refresing} />
+        }
+      >
         <TouchableOpacity onPress={() => router.back()}>
           <Ionicons name="chevron-back-outline" size={32} />
         </TouchableOpacity>

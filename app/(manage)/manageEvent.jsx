@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   Image,
   Alert,
+  Platform,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { DeleteEvent, getTicketInfo, getTicketSails } from "../../lib/appwrite";
@@ -44,7 +45,7 @@ const ManageEvent = () => {
   // };
 
   return (
-    <SafeAreaView className="h-screen">
+    <SafeAreaView className={`h-screen ${Platform.OS === "ios" ? "" : "p-3"} `}>
       <ScrollView contentContainerStyle={{ padding: 5, flexGrow: 1 }}>
         <View className="flex-row items-center justify-between p-3">
           <View className="flex-row items-center gap-4">

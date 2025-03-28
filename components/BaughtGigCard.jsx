@@ -9,7 +9,7 @@ import {
   TextInput,
   Alert,
 } from "react-native";
-import { rateGig } from "../lib/appwrite"; // Assuming cancelGig function exists
+import { cancelGigOrders, rateGig } from "../lib/appwrite"; // Assuming cancelGig function exists
 import { router } from "expo-router";
 
 const BaughtGigCard = ({
@@ -49,7 +49,13 @@ const BaughtGigCard = ({
         { text: "No", style: "cancel" },
         {
           text: "Yes",
-          onPress: "",
+          onPress: async () => {
+            try {
+              await cancelGigOrders($id);
+            } catch (error) {
+              console.error(error);
+            }
+          },
         },
       ],
       { cancelable: true }
